@@ -18,7 +18,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 /* header style */
@@ -30,6 +30,7 @@ main {
 .page .header p,
 .page .header button {
   margin-bottom: 15px;
+  margin-top: 10px;
 }
 
 .page .header > p {
@@ -64,20 +65,20 @@ main {
 
 /* container style*/
 .page .container {
-  display: flex;
+  display: grid;
   flex-direction: column;
 }
 
 .page .container form,
 input {
-  width: inherit;
+  width: 100%;
 }
 
 .page .container form input {
   border: 1px solid #dbdbdb;
   background-color: #fafafa;
-  padding: 10px 5px;
-  margin: 5px 0;
+  padding: 5px 5px;
+  margin: 3px 0;
 }
 
 .page .container form input:last-of-type {
@@ -86,7 +87,7 @@ input {
 
 .page .container form button {
   width: inherit;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   padding: 7px 20px;
   border-radius: 5px;
   border: none;
@@ -101,7 +102,9 @@ input {
 }
 
 .page .container ul li {
-  display: inline;
+  display: grid;
+  margin-right: 10px;
+  padding-right: 10px;
   color: #8e9096;
 }
 
@@ -222,8 +225,8 @@ input {
     border: 1px solid #dbdbdb;
     background-color: white;
     width: 350px;
-    height: 70px;
-    margin-top: 20px 0;
+    height: 50px;
+    padding-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -243,5 +246,10 @@ input {
 
   .page .footer {
     width: 100%;
+  }
+
+  .text{
+    font-size: 12px;
+    line-height: 100%;
   }
 }
