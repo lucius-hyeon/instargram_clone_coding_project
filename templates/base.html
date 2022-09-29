@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    {% load static %}
+
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <!-- google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+
+    <!--css 파일 불러오기!-->
+    <link href="/static/css/common.css" rel="stylesheet" type="text/css"/>
+
+    <!--js 파일 불러오기-->
+    <script defer="defer" src="/static/js/common.js"></script>
+
+    <!--파비콘 적용-->
+    <link rel="shortcut icon" href="/static/images/favicon_instagram.ico">
+
+    <title>Instgram clone</title>
+    {% block extra-style %}{% endblock %}
+
+    <link href="/static/css/join_style.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <style>
+      .title-center {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .wrap {
+        width: 400px;
+        margin: 0 auto;
+      }
+
+      .form-area {
+        margin-top: 25px;
+      }
+
+      .timeline-container {
+        margin-top: 25px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--헤더 부분-->
+    <div class="main_header" id="main_header">
+      <div class="header_body">
+        <div class="logo_box">
+          <a href="https://velog.io/@kimphysicsman" style="float:left;">
+            <img style="margin-top: 10px" src="/static/images/logo_instagram.png">
+          </a>
+        </div>
+        <div class="search_box">
+          <button class="search_active_button" id="search_active_button" onclick="active_search_input_box()"></button>
+          <img class="search_icon" id="search_icon" src="/static/images/icon_search.png">
+          <input id="search_input_box" aria-label="입력 검색" class="search_input_box" autocapitalize="none" placeholder="검색" type="text" value="">
+        </div>
+        <div class="header_icon_box">
+          <a href="#"><img width="20px" height="20px" src="/static/images/icon_home.png"></a>
+          <a href="#"><img width="20px" height="20px" src="/static/images/icon_share.png"></a>
+          <a href="#"><img width="20px" height="20px" src="/static/images/icon_add.png"></a>
+          <a href="#"><img width="20px" height="20px" src="/static/images/icon_find.png"></a>
+          <a href="#"><img width="20px" height="20px" src="/static/images/icon_heart_empty.png"></a>
+          <a href="#"><img class="img_circle" width="24px" height="24px" src="/static/images/img_profile.jpg"></a>
+        </div>
+      </div>
+
+    </div>
+
+    {% block content %}{% endblock %}
+
+    {% block extra-script %}{% endblock %}
+  </body>

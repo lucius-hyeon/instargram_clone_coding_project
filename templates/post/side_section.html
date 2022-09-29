@@ -1,0 +1,114 @@
+<div class="profile_box" id="profile_box">
+  <div class="my_account">
+    <div class="my_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+      <img class="img_circle" width="56px" height="56px" src="/static/images/img_profile.jpg">
+    </div>
+    <div class="my_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+      <p style="line-height: 0.5; font-weight: 500">kimphysicsman</p>
+      <p style="line-height: 0.3; color: #909090;">DongWoo Kim</p>
+    </div>
+    <div class="my_trans_button">
+      <a href="https://velog.io/@kimphysicsman">전환</a>
+    </div>
+  </div>
+
+  <div class="other_accounts">
+    <div class="other_accounts_title">
+      <p style="color: #909090; margin-bottom: 0px">
+        회원님을 위한 추천</p>
+      <p style="font-size: 12px; margin-bottom: 0px">모두 보기</p>
+    </div>
+    <div class="other_accounts_body">
+      {% for f in followers%}
+        <div class="other_account">
+          <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+            <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+          </div>
+          <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+            <p style="line-height: 0.1; font-weight: 500">{{f.follow.username}}</p>
+            <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+          </div>
+          <div class="other_follow_button">
+            <a href="{% url 'user:switch_follow' f.follow.id %}">팔로우</a>
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="other_account">
+        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+        </div>
+        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
+          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+        </div>
+        <div class="other_follow_button">
+          <a href="https://velog.io/@kimphysicsman">팔로우</a>
+        </div>
+      </div>
+      <div class="other_account">
+        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+        </div>
+        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
+          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+        </div>
+        <div class="other_follow_button">
+          <a href="https://velog.io/@kimphysicsman">팔로우</a>
+        </div>
+      </div>
+      <div class="other_account">
+        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+        </div>
+        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
+          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+        </div>
+        <div class="other_follow_button">
+          <a href="https://velog.io/@kimphysicsman">팔로우</a>
+        </div>
+      </div>
+      <div class="other_account">
+        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+        </div>
+        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
+          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
+          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+        </div>
+        <div class="other_follow_button">
+          <a href="https://velog.io/@kimphysicsman">팔로우</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer" id="footer">
+    <a href="https://velog.io/@kimphysicsman">소개</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">도움말</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">홍보 센터</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">API</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">채용 정보</a>
+    <br>
+    <a href="https://velog.io/@kimphysicsman">개인정보처리방침</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">약관</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">위치</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">인기 계정</a>
+    ·
+    <a href="https://velog.io/@kimphysicsman">해시태그</a>
+    <br>
+    <a href="https://velog.io/@kimphysicsman">언어</a>
+    <br>
+    <br>
+    <p>© 2022 INSTAGRAM FROM META</p>
+  </div>
+</div>
