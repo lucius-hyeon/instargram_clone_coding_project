@@ -133,7 +133,7 @@
 }
 
 .my_id {
-    width: 187px;
+    width: 170px;
     height: 100%;
     font-size: 15px;
     padding-top: 12px;
@@ -141,7 +141,7 @@
 }
 
 .my_trans_button {
-    width: 24px;
+    width: 48px;
     height: 100%;
 
     font-weight: bolder;

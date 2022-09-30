@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import UserModel, FollowModel
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -9,18 +10,17 @@ def join(request):
     return render(request, 'user/join.html')
 
 
-@login_required(login_url='user:signin')
-def switch_follow(request):
-    follow_id = request.GET.get('followId', '')
+@login_required(login_url='user:login')
+def switch_follow(request,user_id):
     user = UserModel.objects.get(pk=request.user.id)
-    follow = UserModel.objects.get(pk=follow_id)
+    follow = UserModel.objects.get(pk=user_id)
 
     try:
         follower = FollowModel.objects.get(user=user, follow=follow)
         follower.delete()
     except FollowModel.DoesNotExist:
         FollowModel.objects.create(user=user, follow=follow)
-
+    return JsonResponse({'msg':'success'})
 
 """
 def sign_up_view(request):
@@ -67,4 +67,4 @@ def login(request):
 @login_required
 def logout(request):
     auth.logout(request)
-    return redirect('user/login')
+    return redirect('/user/login')
