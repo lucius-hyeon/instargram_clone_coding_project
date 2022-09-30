@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('post.urls')),
 
-    path('user/', include('user.urls')),
+    path('', include('user.urls')),
 
 
     #follow
