@@ -1,3 +1,6 @@
+
+{% block content %}
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -41,21 +44,28 @@
             </div>
           </div>
           <div class="container">
-            <form class="form_area" action="">
-              <input type="text" placeholder="이메일 주소">
-              <input type="text" placeholder="성명">
-              <input type="text" placeholder="사용자 이름">
-              <input type="password" placeholder="비밀번호">
-
+            <form class="form_area" action="/user/join/" method="post">
+              {% csrf_token %}
+              <input type="text" placeholder="이메일 주소" name="email">
+              <input type="text" placeholder="성명" name="username">
+              <input type="text" placeholder="사용자 이름" name="nickname">
+              <input type="password" placeholder="비밀번호" name="password">
+              <input type="password" placeholder="비밀번호 확인" name="password2">
+              {% if error %}
+                <div class="alert alert-danger" role="alert">
+                  {{ error }}
+                </div>
+              {% endif %}
               <button>가입</button>
-              
+
             </form>
   
           </div>
         </div>
         <div class="option">
           <p>계정이 있으신가요?
-            <a href="">로그인</a>
+
+            <a href="/login/">로그인</a>
           </p>
         </div>
         <div class="otherapps">
@@ -108,3 +118,5 @@
       </main>
   </body>
 </html>
+{% endblock %}
+

@@ -1,3 +1,7 @@
+
+{% block content %}
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -19,22 +23,38 @@
     <div class="header">
       <img src="https://i.imgur.com/zqpwkLQ.png" />
     </div>
+    <form action ='/login/' method="post">
+      {% csrf_token %}
     <div class="l-part">
-      <input type="text" placeholder="이메일" class="input-1" />
+      <input type="text" placeholder="이메일" class="input-1" name='email'/>
       <div class="overlap-text">
-        <input type="password" placeholder="비밀번호" class="input-2" />
+        <input type="password" placeholder="비밀번호" class="input-2" name='password'/>
       </div>
-      <input type="button" value="로그인" class="btn" />
+      {% if error %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+      {% endif%}
+      <input type="submit" value="로그인" class="btn" />
+      {% load socialaccount %}
+      <button>
+        <a href = "{% provider_login_url 'kakao' method= 'oauth2 %}">카카오 로그인</a>
+      </button>
     </div>
   </div>
+  </form>
   <div class="sub-content">
     <div class="s-part">
-        계정이 없으신가요?<a href="#">가입하기</a>
+        계정이 없으신가요?<a href="/join/">가입하기</a>
+
     </div>
   </div>
 </div>
 
  </body>
 </html>
+
+{% endblock %}
+
 
 

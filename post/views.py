@@ -6,6 +6,7 @@ from user.models import FollowModel
 # Create your views here.
 
 
+
 def test_html(request):
     # return render(request, 'post/temp_home.html')
     return render(request, 'post/test.html')
