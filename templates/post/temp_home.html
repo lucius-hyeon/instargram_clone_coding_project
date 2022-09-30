@@ -1,0 +1,120 @@
+
+{% comment %} {% extends "base.html" %} {% endcomment %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dropzone@5.5.1/dist/dropzone.min.css">
+{% endblock %}
+
+{% block body %}
+<nav class="fast-nav navbar navbar-expand-lg navbar-light bg-white">
+  {% comment %} <a class="navbar-brand text-danger col-sm-8" href="{% url 'contents_home' %}"><b>Instargram</b></a> {% endcomment %}
+  <a class="navbar-brand text-danger col-sm-8" href="#"><b>Instargram</b></a>
+  <div class="collapse navbar-collapse col-sm-4" id="navbarText" style="display: inline-block !important; text-align: right;">
+    <span class="navbar-text col-sm-3">
+      {{ request.user }}
+    </span>
+    <span class="navbar-text col-sm-3">
+      {% comment %} <a href="{% url 'contents_relation' %}">친구목록</a> {% endcomment %}
+    </span>
+    <span class="navbar-text col-sm-3">
+      <a href="javascript:void(0);" id="logout">로그아웃</a>
+    </span>
+  </div>
+</nav>
+
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/dropzone@5.5.1/dist/dropzone.min.js"></script>
+
+<br>
+<div id="formContainer">
+    {% comment %} <form action="{% url 'api_v1_content_create' %}" class="dropzone" id="uploader" style="background-color:whitesmoke;"> {% endcomment %}
+      <form action="#" class="dropzone" id="uploader" style="background-color:whitesmoke;">  
+      <div class="dz-message" data-dz-message><span>드래그 드랍하거나 클릭하여 이미지 선택</span></div>
+        <div class="fallback">
+            <input name="file" type="file" />
+        </div>
+    </form>
+    <div class="form-group">
+        <label>아래에 글을 입력해주세요.</label>
+        <textarea class="form-control rounded-0" id="text" rows="3"></textarea>
+    </div>
+
+    <div style="text-align: right;">
+      <button type="button" class="btn btn-danger" id="upload">작성하기</button>
+    </div>
+</div>
+
+{% for content in contents %}
+{% for image in content.image_set.all %}
+<div class="content">
+    <div class="post">
+        <div class="text-center user-block">
+          <h5 class="text-info left-things">{{ content.user.username }}</h5>
+          <img class="img-info img-circle img-bordered-sm" src="{{ image.image.url }}" alt="User Image">
+          {% endfor %}
+        <div>
+          <span class="username left-things">
+            <a href="#" class="text-info">{{ content.user.username }}</a>
+            <a href="#" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+          </span>
+        </div>
+        <p>{{ content.text }}</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script>
+
+Dropzone.autoDiscover = false;
+
+var dropZoneUploader = new Dropzone('form#uploader', {
+ init: function () {
+      var dropzone = this;
+
+      $('#upload').click(function () {
+          dropZoneUploader.processQueue();
+      });
+
+      dropzone.on("sending", function(file, xhr, formData){
+        formData.append("text", $('#text').val());
+      });
+  },
+  parallelUploads: 10,
+  autoProcessQueue: false,
+  type: 'POST',
+  success: function () {
+    location.reload();
+  },
+  error: function(e) {
+     console.log(e)
+    alert('에러가 발생했습니다. 다시 시도해주세요.');
+  },
+  acceptedFiles: ".jpeg,.jpg,.png,.gif",
+  uploadMultiple: true,
+});
+
+$(document).ready(function(){
+/*
+
+var myDropZone = Dropzone.forElement(".dropzone");
+myDropZone.options.autoProcessQueue = false;
+myDropZone.on("sending", function(file, xhr, data) {
+
+            // First param is the variable name used server side
+            // Second param is the value, you can add what you what
+            // Here I added an input value
+            data.append("your_variable", $('#your_input').val());
+        });
+*/
+
+$('#logout').click(function () {
+    $.get('/api/v1/users/logout/', {}, function() {
+      location.reload();
+    });
+});
+});
+  </script>
+{% endblock %}
