@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from .models import UserModel, FollowModel
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 # Create your views here.
 
 
-def join(request):
-    return render(request, 'user/join.html')
+# def join(request):
+#     return render(request, 'user/join.html')
 
 
 @login_required(login_url='user:signin')
@@ -22,10 +23,10 @@ def switch_follow(request):
         FollowModel.objects.create(user=user, follow=follow)
 
 
-"""
-def sign_up_view(request):
+
+def join(request):
     if request.method=='GET':
-        return render(request, 'user/signup.html')
+        return render(request, 'user/join.html')
     elif request.method=='POST':
         name=request.POST.get('name', None)
         password=request.POST.get('password', None)
@@ -41,7 +42,7 @@ def sign_up_view(request):
             new_user.password=password
             new_user.email=email
             new_user.user_id
-"""
+
 
 
 ### 로그인 ###
