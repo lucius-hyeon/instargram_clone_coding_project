@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block extra-style %}
+<style>
+    .fn-sm{
+        font-size: 12px;
+    }
+    .fn-m{
+        font-size: 15px;
+    }
+    .row{
+        vertical-align: middle;
+    }
+    .container{
+        max-width: 200px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container" style="margin-top: 130px; max-width: 600px;">
+    <h4>추천</h4>
+    <div class="card align-middle">
+        {% for f in unfollowers %}
+        <div class="row p-3" style="height: 60px;">
+            <div class="col-1">
+                <a href="{% url 'profile' f.username %}">
+                    <img src="{{f.profile_image.url}}" width="40px" height="40px" alt="" style="border-radius: 50%;">   
+                </a>
+            </div>
+            <div class="col-7 fn-sm">
+                <div class="fn-m">
+                    <a href="{% url 'profile' f.username %}" class="user-name" style="text-decoration: none; color: black;">
+                        {{ f.username }}
+                    </a>
+                </div>
+                <div>{{ f.bio }}</div>
+            </div>
+            <div class="col-4 text-end">
+                <button id="user-{{forloop.counter}}" onclick="switchFollow(`{{f.id}}`, `{{forloop.counter}}`)" class="btn btn-primary">팔로우</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra-script %}
+<script>
+    function switchFollow(userId, count){
+      $.ajax({
+              type: 'GET',
+              url: `/follow/${userId}`,
+              data: {},
+              success:function(response){
+                  console.log(response.msg)
+                  
+                  if ($(`#user-${count}`).text() == '팔로우'){
+                    $(`#user-${count}`).removeClass('btn-primary')
+                    $(`#user-${count}`).addClass('btn-outline-danger')
+                    $(`#user-${count}`).text('취소')
+                  }else{
+                      $(`#user-${count}`).removeClass('btn-outline-danger')
+                      $(`#user-${count}`).addClass('btn-primary')
+                    $(`#user-${count}`).text('팔로우')
+                  }
+
+              }
+          })
+    }
+</script>
+{% endblock %}
