@@ -144,5 +144,6 @@ AUTH_USER_MODEL = 'user.UserModel'
 
 
 # Media files -업로드를 하는 url과 디렉토리 설정
+
 MEDIA_URL = 'uploads/'  # 업로드할 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # 로컬 디렉토리 어디에 저정할 것인지

@@ -2,7 +2,7 @@ import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from post.models import ImageModel, PostModel
-from user.models import FollowModel
+from user.models import FollowModel, UserModel
 # Create your views here.
 
 
