@@ -4,13 +4,14 @@ from user.models import FollowModel
 # Create your views here.
 
 
-@login_required(login_url='user:login')
+# @login_required(login_url='user:login')
 def index(request):
-    user = request.user
-    followers = FollowModel.objects.filter(user=user)
+    # user = request.user
+    # followers = FollowModel.objects.filter(user=user)
 
-    context = {
-        'follower': followers,
-        # 'storys' : get_sorted_story(user),
-    }
-    return render(request, 'index.html', context)
+    # context = {
+    #     'follower': followers,
+    #     # 'storys' : get_sorted_story(user),
+    # }
+    # return render(request, 'index.html', context)
+    return render(request, 'index.html')

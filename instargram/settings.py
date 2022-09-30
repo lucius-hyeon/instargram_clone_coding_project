@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from telnetlib import AUTHENTICATION
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,8 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'user',
     'post',
+
+    #all-auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    #provide
+    'allauth.socialaccount.providers.google'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +75,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+
+            
             ],
         },
     },
@@ -146,3 +159,14 @@ AUTH_USER_MODEL = 'user.UserModel'
 # Media files -업로드를 하는 url과 디렉토리 설정
 MEDIA_URL = 'files/'  # 업로드할 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # 로컬 디렉토리 어디에 저정할 것인지
+
+
+#all-auth setting
+AUTHENTICATION_BACKENDS =(
+    'django.contrib.auth.backends.ModelBackend',
+
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
+
+SITE_ID = 1
+LOGIN_REDIRECT_USRL ='/',
