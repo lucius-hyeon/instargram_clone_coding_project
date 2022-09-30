@@ -26,11 +26,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('post.urls')),
+
     path('user/', include('user.urls')),
 
 
     #follow
     path('follow/<int:user_id>/', switch_follow, name = "switch_follow")
+
 
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
