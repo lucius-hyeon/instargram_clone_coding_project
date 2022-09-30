@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from user.models import UserModel
 from django.conf import settings

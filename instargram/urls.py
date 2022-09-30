@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from user.views import switch_follow
+from django.conf import settings
+from django.conf.urls.static import static
+
 # from django.conf import settings
 # from django.conf.urls.static import static
 
@@ -23,6 +26,14 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('post.urls')),
+
     path('', include('user.urls')),
+
+
+    #follow
+    path('follow/<int:user_id>/', switch_follow, name = "switch_follow")
+
+
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
