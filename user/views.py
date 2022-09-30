@@ -103,8 +103,6 @@ def login(request):
 
 
         if user is not None:
-            
-
             auth.login(request, user)  # 로그인 처리
             return render(request, 'index.html')
 
