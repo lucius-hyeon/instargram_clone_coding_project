@@ -4,12 +4,13 @@ from django.shortcuts import render, redirect
 from .models import UserModel, FollowModel
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-
 import re
 
-# Create your views here.
 
+# def join(request):
+#     return render(request, 'user/join.html')
 
 
 # @login_required(login_url='user:signin')
@@ -18,18 +19,30 @@ import re
 #     user = UserModel.objects.get(pk=request.user.id)
 #     follow = UserModel.objects.get(pk=follow_id)
 
+
 #     try:
 #         follower = FollowModel.objects.get(user=user, follow=follow)
 #         follower.delete()
 #     except FollowModel.DoesNotExist:
 #         FollowModel.objects.create(user=user, follow=follow)
 
+@login_required(login_url='user:login')
+def switch_follow(request,user_id):
+    user = UserModel.objects.get(pk=request.user.id)
+    follow = UserModel.objects.get(pk=user_id)
+
+    try:
+        follower = FollowModel.objects.get(user=user, follow=follow)
+        follower.delete()
+    except FollowModel.DoesNotExist:
+        FollowModel.objects.create(user=user, follow=follow)
+    return JsonResponse({'msg':'success'})
 
 
 def join(request):
     if request.method=='GET':
         return render(request, 'user/join.html')
-    
+
     elif request.method=='POST':
         
         check_email = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
@@ -59,6 +72,7 @@ def join(request):
             return render(request, 'user/join.html',{'error':'이미 가입된 이메일 계정입니다.'})
 
         else:
+
             UserModel.objects.create_user(
                 username = username,
                 nickname = nickname,
@@ -67,6 +81,11 @@ def join(request):
             )
             return render(request, 'user/login.html')
 
+            # new_user = UserModel()
+            # new_user.name=name
+            # new_user.password=password
+            # new_user.email=email
+            # new_user.user_id
 
 
 

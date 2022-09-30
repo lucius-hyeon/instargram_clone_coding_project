@@ -11,7 +11,7 @@ class UserModel(AbstractUser):
     bio = models.CharField(max_length=50, null=True)
     nickname = models.CharField(max_length=10,null=False)
     profile_image = models.ImageField(
-        upload_to='media', height_field=None, width_field=None, null=True)
+        upload_to='media', height_field=None, width_field=None, default='default.jpeg')
 
 
 class FollowModel(models.Model):

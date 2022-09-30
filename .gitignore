@@ -180,3 +180,5 @@ cython_debug/
 *.drawio
 migrations/
 venv/
+
+uploads
