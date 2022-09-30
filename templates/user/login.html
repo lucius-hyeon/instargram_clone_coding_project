@@ -34,6 +34,10 @@
         </div>
       {% endif%}
       <input type="submit" value="로그인" class="btn" />
+      {% load socialaccount %}
+      <button>
+        <a href = "{% provider_login_url 'kakao' method= 'oauth2 %}">카카오 로그인</a>
+      </button>
     </div>
   </div>
   </form>
