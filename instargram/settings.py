@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     # 'django.contrib.sites.models.Site',
     'user',
     'post',
+    'story',
+
 
     # #all-auth
     # 'allauth',
@@ -171,7 +173,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # 로컬 디렉토리 어디에 
 #     'allauth.account.auth_backends.AuthenticationBackend'
 # )
 
-# SITE_ID = 2
+SITE_ID = 1
 # LOGIN_REDIRECT_URL = 'index' # 로그인 후 리디렉션할 페이지
 # ACCOUNT_LOGOUT_REDIRECT_URL = "index"  # 로그아웃 후 리디렉션 할 페이지
 # ACCOUNT_LOGOUT_ON_GET = True # 로그아웃 버튼 클릭 시 자동 로그아웃

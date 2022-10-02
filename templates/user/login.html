@@ -41,6 +41,45 @@
         </div>
       </div>
     </div>
+    <script>
+      var finished_rendering = function() {
+        console.log("finished rendering plugins");
+        var spinner = document.getElementById("spinner");
+        spinner.removeAttribute("style");
+        spinner.removeChild(spinner.childNodes[0]);
+      }
+      FB.Event.subscribe('xfbml.render', finished_rendering);
+      </script>
+
+          <div
+          class="fb-login-button"
+          data-max-rows="1"
+          data-size="large"
+          data-button-type="continue_with"
+          data-use-continue-as="true"
+          ></div>
+  
+          <div id="fb-root"></div>
+          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v15.0&appId=1287914092031160&autoLogAppEvents=1" nonce="fp3ES3Ik"></script>
+          <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1287914092031160',
+          xfbml      : true,
+          version    : 'v15.0'
+        });
+        FB.AppEvents.logPageView();
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
   </body>
 
 </html>

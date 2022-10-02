@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from post.models import ImageModel, PostModel
 from user.models import FollowModel, UserModel
+from story.views import get_storys_author
 # Create your views here.
 
 
@@ -30,8 +31,11 @@ def post_add(request):
 def index(request):
     user = request.user
     followers = FollowModel.objects.filter(user=user)[:6]
+    all_story_author = get_storys_author(request)
     context = {
         'followers': followers,
+        'authors' : all_story_author[0],
+        'viewed_authors' : all_story_author[1],
         # 'storys' : get_sorted_story(user),
     }
     return render(request, 'index.html', context)

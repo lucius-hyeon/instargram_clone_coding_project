@@ -1,0 +1,183 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+<style>
+    .swiper,
+    .swiper1,
+    .swiper2,
+    .swiper3 {
+        max-width: 500px;
+        height: 500px;
+    }
+    .swiper-wraper{
+        height: 100%;
+    }
+    .swiper-button-next,
+    .swiper-button-prev{
+        color: black;
+    }
+    .img-wrap{
+        height: 500px;
+    }
+    .my-img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
+<!-- Slider main container -->
+<div class="swiper">
+    <!-- Additional required wrapper -->
+    <div class="swiper-wrapper text-center">
+        <!-- Slides -->
+        <div class="swiper-slide">
+            <!-- <div class="img-wrap"> -->
+                <img class="my-img" src="/images/IMG_0036.png" alt="" class="">
+            <!-- </div> -->
+        </div>
+        <div class="swiper-slide"><img class="my-img" src="/images/IMG_0037.png" alt=""></div>
+        <div class="swiper-slide"><img class="my-img" src="/images/IMG_0039.png" alt=""></div>
+
+    </div>
+    <!-- If we need pagination -->
+    <div class="swiper-pagination"></div>
+
+    <!-- If we need navigation buttons -->
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+
+    <!-- If we need scrollbar -->
+    <!-- <div class="swiper-scrollbar"></div> -->
+</div>
+<div class="story_box">
+    <div class="card" id="card">
+      <button type="button" class="bg_slide_button" id="bg_slide_button_left" onclick="move_story_slide(0)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_left.png">
+      </button>
+      <button type="button" class="bg_slide_button" id="bg_slide_button_right" onclick="move_story_slide(1)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_right.png">
+      </button>
+      <div class="card-body" id="stories">
+        <div style="width: 10px;"></div>
+        <!-- 스토리 섹션 -->
+        {% for author in authors %}
+        <div class="story">
+          <div class="story_img_box">
+            <a href="{% url 'view_story' author.username %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+          <p class="story_id text-center">{{author.username}}</p>
+        </div>
+        {% endfor %}
+        {% for author in viewed_authors %}
+        <div class="story">
+          <div class="story_img_box_0">
+            <a href="{% url 'view_story' author.username %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+            <p class="story_id text-center">{{author.username}}</p>
+        </div>
+        {% endfor %}
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">1 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">2 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">3 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">4 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">5 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">6 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">7 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">8 kimphysicsman</p>
+        </div>
+        <div class="story">
+          <div class="story_img_box">
+            <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+          </div>
+          <p class="story_id">9 kimphysicsman</p>
+        </div>
+        <div class="story">
+            <div class="story_img_box">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+            </div>
+            <p class="story_id">9 kimphysicsman</p>
+          </div>
+          <div class="story">
+            <div class="story_img_box">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+            </div>
+            <p class="story_id">9 kimphysicsman</p>
+          </div>
+          <div class="story">
+            <div class="story_img_box">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+            </div>
+            <p class="story_id">9 kimphysicsman</p>
+          </div>
+          <div class="story">
+            <div class="story_img_box">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+            </div>
+            <p class="story_id">9 kimphysicsman</p>
+          </div>
+          <div class="story">
+            <div class="story_img_box">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
+            </div>
+            <p class="story_id">9 kimphysicsman</p>
+          </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+  <script>
+        const swiper1 = new Swiper('.swiper', {
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+            hiddenClass : 'swiper-button-hidden'
+        },
+        });
+  </script>
