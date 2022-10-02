@@ -123,7 +123,8 @@ def login(request):
 
             auth.login(request, user)  # 로그인 처리
             print('로그인 성공')
-            return render(request, 'index.html')
+            return redirect('/')
+            # return render(request, 'index.html')
 
         else:
             print('로그인 실패')
@@ -137,7 +138,7 @@ def login(request):
 @login_required
 def logout(request):
     auth.logout(request)
-    return redirect('/login')
+    return redirect('/')
 
 
 # def kakao_login(request):
