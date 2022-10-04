@@ -1,11 +1,19 @@
+import os
+from uuid import uuid4
+from django.core.files.storage import FileSystemStorage  # 파일저장
+
 import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from post.models import BookMarkModel, ImageModel, PostModel
+=======
+from instargram.settings import MEDIA_ROOT
+from post.models import ImageModel, PostModel
+>>>>>>> 205eb4a2264ed4b71fcd9751e450a4175eca95c5
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 # Create your views here.
-
 
 
 def test_html(request):
@@ -16,13 +24,26 @@ def test_html(request):
 @login_required(login_url='login')
 def post_add(request):
     if request.method == 'POST':
-        # author = request.POST.get('user_id', '')
+
         user = request.user
         content = request.POST.get('content', '')
-        image = request.POST.get('image', '')
+        image = request.FILES.get('file')
+        image_name = request.POST.get('image', '')
+
+        # image_name = uuid4().hex
+        # save_path = os.path.join(MEDIA_ROOT, image_name)
+        # with open(save_path, 'wb+') as destination:
+        #     for chunk in image.Chunk():
+        #         destination.write(chunk)
+
+        # for image in request.FILES.getlist(key):
+        #     section = get_object_or_404(Section, pk = section_id[key])
+        #     ig = Image(section = section, image = image)
+        #     ig.save()
 
         my_post = PostModel.objects.create(author=user, content=content)
-        my_image = ImageModel.objects.create(post=my_post, image=image)
+        my_image = ImageModel.objects.create(
+            post=my_post, image=image, image_name=image_name)
 
         return render(request, 'index.html')
 
@@ -30,12 +51,22 @@ def post_add(request):
 @login_required(login_url='login')
 def index(request):
     user = request.user
+<<<<<<< HEAD
     followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
     all_story_author = get_storys_author(request)
     context = {
         'followers': followers,
         'authors' : all_story_author[0],
         'viewed_authors' : all_story_author[1],
+=======
+    post_list = PostModel.objects.all().order_by('-id')
+    image_list = ImageModel.objects.all().order_by('-post_id')
+    followers = FollowModel.objects.filter(user=user)[:6]
+    context = {
+        'followers': followers,
+        'post_list': post_list,
+        'image_list': image_list,
+>>>>>>> 205eb4a2264ed4b71fcd9751e450a4175eca95c5
         # 'storys' : get_sorted_story(user),
     }
     return render(request, 'index.html', context)

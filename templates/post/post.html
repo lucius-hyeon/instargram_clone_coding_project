@@ -126,7 +126,8 @@
       <div id="input_image" class="modal_image_upload_content"></div>
       <div class="modal_content_write">
         <div class="feed_name">
-
+          <img class="img_circle" width="30px" height="30px" src="{{user.profile_image.url}}">
+            {{user.username}}
         </div>
         <div style="height: 440px">
           <textarea id="input_content" class="feed_content_textarea form-control col-sm-5" rows="10" placeholder="설명을 입력하세요..."></textarea>
@@ -227,11 +228,11 @@
     // const profile_image = $('#input_profile_image').attr('src');
     // const user_id = $('#input_user_id').text();
 
-    const file = files[0];
+    const file = files;
 
     let fd = new FormData();
 
-    // fd.append('file', file);
+    fd.append('file', file[0]);
     fd.append('image', image);
     fd.append('content', content);
     // fd.append('profile_image', profile_image);

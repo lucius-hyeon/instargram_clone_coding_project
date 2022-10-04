@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% block extra-style %}
-<style>
-.underline:hover{
-  cursor: pointer;
-}
-</style>
+  <style>
+    .underline:hover {
+      cursor: pointer;
+    }
+  </style>
 
 {% endblock %}
+
 {% block content%}
   <!--본문 부분-->
   <div class="main_body" id="main_body">
@@ -28,15 +29,15 @@
                   <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
                 </a>
               </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <div class="post_dots">
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-                <div style="width: 7px"></div>
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
+              <div class="post_img">
+                <img width="100%" src="{{image.image.url}}">
+                <div class="post_icon_box_slide">
+                  <div class="post_dots">
+                    <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
+                    <div style="width: 7px"></div>
+                    <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
