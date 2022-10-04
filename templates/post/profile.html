@@ -3,58 +3,23 @@
 {% block content %}
 
   <style>
-    .box {
-      width: 150px;
-      height: 150px;
+    .box_profile {
       border-radius: 70%;
       overflow: hidden;
     }
 
-    .profile {
+    .profiles {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    .feed_box {
-      margin: 20px 0;
-      border: solid 1px gray;
-      background-color: white;
-    }
-
-    .modal_overlay {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(1.5px);
-      -webkit-backdrop-filter: blur(1.5px);
-    }
-
-    .modal_window {
-      background: white;
-      backdrop-filter: blur(13.5px);
-      -webkit-backdrop-filter: blur(13.5px);
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      width: 800px;
-      height: 600px;
-      position: relative;
-      padding: 10px;
     }
   </style>
 
   <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 90px; background-color:#FAFAFA">
     <div style="padding: 0px 60px; padding-bottom: 30px;">
-      <div class="box" style="width: 175px; height: 175px;">
+      <div class="box_profile" style="width: 175px; height: 175px;">
 
-        <img class="profile" src="{{user.profile_image.url}}">
+        <img class="profiles" src="{{user.profile_image.url}}">
       </div>
     </div>
     <div style="text-align: left">
