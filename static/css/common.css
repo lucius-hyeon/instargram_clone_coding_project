@@ -130,7 +130,7 @@
 }
 
 .my_id {
-  width: 187px;
+  width: 170px;
   height: 100%;
   font-size: 15px;
   padding-top: 12px;
@@ -324,9 +324,19 @@
   background-origin: border-box;
   background-clip: content-box, border-box;
 }
+.story_img_box_0 {
+  width: 66px;
+  height: 66px;
+
+  border: 3px solid gray;
+  border-radius: 50%;
+ 
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
 
 .story_img_outline {
-  border: 3px solid transparent;
+  border: 1px solid transparent;
   border-radius: 50%;
   border-color: white;
 

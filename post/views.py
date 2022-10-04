@@ -8,8 +8,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from instargram.settings import MEDIA_ROOT
-from post.models import ImageModel, PostModel, LikeModel, CommentModel
+from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
 from user.models import FollowModel, UserModel
+from story.views import get_storys_author
 
 # Create your views here.
 
@@ -48,26 +49,51 @@ def post_add(request):
 
 @login_required(login_url='login')
 def index(request):
+    user = request.user
     if request.method == 'GET':
 
         user = request.user
         post_list = PostModel.objects.all().order_by('-id')
         image_list = ImageModel.objects.all().order_by('-post_id')
-        followers = FollowModel.objects.filter(user=user)[:6]
+        # followers = FollowModel.objects.filter(user=user)[:6]
+        followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
+        all_story_author = get_storys_author(request)
 
         cm = CommentModel.objects.all()
         context = {
             'followers': followers,
             'post_list': post_list,
             'image_list': image_list,
-            'comments': cm
-            # 'storys' : get_sorted_story(user),
+            'comments': cm,
+            'authors' : all_story_author[0],
+            'viewed_authors' : all_story_author[1],
         }
     return render(request, 'index.html', context)
 
 
-def profile(request, username):
-    context = {}
+def profile(request, nickname):
+    user = request.user
+    print(dir(user))
+    print(user.follow)
+    author = UserModel.objects.get(nickname = nickname)
+    author_post = PostModel.objects.filter(author = author)
+    author_bookmark_post = [mark.post for mark in BookMarkModel.objects.filter(user = author)]
+    author_following = [men.follow for men in FollowModel.objects.filter(user = author)]
+    author_follower = [men.user for men in FollowModel.objects.filter(follow = author)]
+    is_author = False
+    if nickname == user.nickname:
+        is_author = True
+    for post in author_post:
+
+        post_dict = {"thumbnail":'', 'post' : ''}
+    context = {
+        'author' : author,
+        'author_post' : author_post,
+        'author_bookmark_post' : author_bookmark_post,
+        'author_following' : author_following,
+        'author_follower' : author_follower,
+        'is_author' : is_author,
+    }
     return render(request, 'post/profile.html', context)
 
 
@@ -127,37 +153,6 @@ def comments_list(request, post_id):
         # return render(request, 'index.html', {'comment':cm})
         return render(request, 'index.html')
 
-# @login_required
-# def is_like(request, post_id):
-#     if request.method =='GET':
-#         like_model = LikeModel() #라이크 모델 인스턴스
-#         user = request.user #유저 불러오기
-
-#         post = PostModel.objects.get(id = post_id) # 포스트 아이디 참조
-
-
-#         try:
-#             is_like = LikeModel.objects.get(post = post, user = user)
-
-#             if is_like =='True' :
-#                 print('True')
-#             else:
-#                 print('false')
-
-#             like_model.save()
-
-#             return render(request, 'index.html', {'like':is_like})
-
-#         except LikeModel.DoesNotExist:
-#             print('예예외')
-#             #데이터가 없으면 true로 바꿔준다ㅣ.
-#             like_model.is_like = True
-#             like_model.post = post
-#             like_model.user = user
-#             like_model.save()
-
-#             return render(request, 'index.html', {'like':is_like})
-
 
 @login_required
 def is_like(request, post_id):
@@ -185,21 +180,3 @@ def is_like(request, post_id):
             print(like_model)
 
             return render(request, 'index.html', {'like': True})
-
-
-@login_required
-def post_like(request, post_id):
-    if request.method == 'GET':
-        user = request.user  # 유저 불러오기
-
-        post = PostModel.objects.get(pk=post_id)  # 포스트 아이디 참조
-
-        try:
-            like = LikeModel.objects.get(post=post, user=user)
-            like.delete()
-            return JsonResponse({'msg': 'unlike'})
-        except LikeModel.DoesNotExist:
-            print('예예외')
-
-            LikeModel.objects.create(user=user, post=post, is_like=True)
-            return JsonResponse({'msg': 'like'})

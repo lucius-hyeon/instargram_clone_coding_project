@@ -1,0 +1,49 @@
+<div class="story_box">
+    <div class="card" id="card">
+      <button type="button" class="bg_slide_button" id="bg_slide_button_left" onclick="move_story_slide(0)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_left.png">
+      </button>
+      <button type="button" class="bg_slide_button" id="bg_slide_button_right" onclick="move_story_slide(1)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_right.png">
+      </button>
+      <div class="card-body" id="stories">
+        <div style="width: 10px;"></div>
+        <!-- 스토리 섹션 -->
+        {% for author in authors %}
+        <div class="story">
+          <div class="story_img_box">
+            <a href="{% url 'view_story' author.username %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+          <p class="story_id text-center">{{author.username}}</p>
+        </div>
+        {% endfor %}
+        {% for author in viewed_authors %}
+        <div class="story">
+          <div class="story_img_box_0">
+            <a href="{% url 'view_story' author.username %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+            <p class="story_id text-center">{{author.username}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+  <script>
+        const swiper1 = new Swiper('.swiper', {
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+            hiddenClass : 'swiper-button-hidden'
+        },
+        });
+  </script>
