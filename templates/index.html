@@ -141,10 +141,12 @@
                 <a class="post_text_id" href="#">
                   {{image.post.author}}</a>
                 {{image.post.content}}
-                <span class="post_text_btn" name="1" onclick="view_post_text_more('1')">
+                <span class="post_text_btn" name="{{image.post_id}}" onclick="view_post_text_more('{{image.post_id}}')">
                   ... 더보기
                 </span>
-                <div class="post_text_more" name="1"></div>
+                <div class="post_text_more" name="{{image.post_id}}">
+                  123<br>
+                </div>
 
                 <div class="post_text_btn">댓글 2개 모두 보기</div>
               </div>
