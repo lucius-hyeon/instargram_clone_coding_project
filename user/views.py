@@ -80,13 +80,6 @@ def join(request):
             )
             return render(request, 'user/login.html')
 
-            # new_user = UserModel()
-            # new_user.name=name
-            # new_user.password=password
-            # new_user.email=email
-            # new_user.user_id
-
-
 ### 로그인 ###
 
 def login(request):
@@ -99,8 +92,6 @@ def login(request):
 
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
-
-        print(email, password)
 
         check_email = check_email.match(email)
 
@@ -115,23 +106,27 @@ def login(request):
 
         # authenticate is only allowed username.
         # find username
-        username = UserModel.objects.get(email=email).username
-        # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
+        username = UserModel.objects.get(email = email).username
+
+        print(username)
+        #User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
         user = auth.authenticate(request, username=username, password=password)
 
         if user is not None:
-
             auth.login(request, user)  # 로그인 처리
-            print('로그인 성공')
-            return redirect('/')
-            # return render(request, 'index.html')
 
+
+            user = request.user
+            print(user.nickname, user, user.username)
+
+            userinfo ={
+                # 'followers': followers,
+
+            }
+            return render(request, 'index.html' )
         else:
             print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
-
-
-# allauth를 이용한 sns 로그인 서비스(인증 기다리는 중..)
 
 
 ### 로그아웃 ###
@@ -140,20 +135,3 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
-
-# def kakao_login(request):
-#     try:
-#         if request.user.is_authenticated:
-#             raise SocialLoginException("User already logged in")
-#         client_id = os.environ.get("KAKAO_ID")
-#         redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback/"
-
-#         return redirect(
-#             f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-#         )
-#     except KakaoException as error:
-#         messages.error(request, error)
-#         return redirect("core:home")
-#     except SocialLoginException as error:
-#         messages.error(request, error)
-#         return redirect("core:home")

@@ -1,9 +1,9 @@
 <div class="profile_box" id="profile_box">
   <div class="my_account">
-    <div class="my_profile" onclick="location.href=`{% url  'profile' user.username %}`">
-      <img class="img_circle" width="56px" height="56px" src="{{user.profile_image.url}}">
+  
     </div>
     <div class="my_id" onclick="location.href=''">
+   <!-- 여기 코드 지워짐 -->
       <p style="line-height: 0.5; font-weight: 500">{{user.username}}</p>
       <p style="line-height: 0.3; color: #909090;">{{user.bio}}</p>
     </div>

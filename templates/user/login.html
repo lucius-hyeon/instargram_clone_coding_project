@@ -13,33 +13,30 @@
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
     <link href="/static/css/login_style.css" rel="stylesheet"/>
 
-    <div id="wrapper">
-      <div class="main-content">
-        <div class="header">
-          <img src="https://i.imgur.com/zqpwkLQ.png"/>
-        </div>
-        <form action='/user/login/' method="post">
-          {% csrf_token %}
-          <div class="l-part">
-            <input type="text" placeholder="이메일" class="input-1" name='email'/>
-            <div class="overlap-text">
-              <input type="password" placeholder="비밀번호" class="input-2" name='password'/>
-            </div>
-            {% if error %}
-              <div class="alert alert-danger" role="alert">
-                {{ error }}
-              </div>
-              {% endif%}
-              <input type="submit" value="로그인" class="btn"/>
-            </div>
-          </div>
-        </form>
-        <div class="sub-content">
-          <div class="s-part">
-            계정이 없으신가요?<a href="{% url 'join' %}">가입하기</a>
-          </div>
-        </div>
+<div class="top">
+  <div class="main-content">
+    <div class="header">
+      <img src="https://i.imgur.com/zqpwkLQ.png" />
+    </div>
+    <form action ='/user/login/' method="post">
+      {% csrf_token %}
+    <div class="l-part">
+      <input type="text" placeholder="이메일" class="input-1" name='email'/>
+      <div class="overlap-text">
+        <input type="password" placeholder="비밀번호" class="input-2" name='password'/>
       </div>
+      {% if error %}
+        <div class="alert alert-danger" role="alert">
+          {{ error }}
+        </div>
+      {% endif%}
+      <input type="submit" value="로그인" class="btn" />
+    </div>
+  </div>
+  </form>
+  <div class="sub-content">
+    <div class="s-part">
+        계정이 없으신가요?<a href="/join/">가입하기</a>
     </div>
   </body>
 
