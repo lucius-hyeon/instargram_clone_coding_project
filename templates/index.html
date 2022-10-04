@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block extra-style %}
-<style>
-.underline:hover{
-  cursor: pointer;
-}
-</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
+  <style>
+    .underline:hover {
+      cursor: pointer;
+    }
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 {% endblock %}
+
 {% block content%}
   <!--본문 부분-->
   <div class="main_body" id="main_body">
@@ -87,113 +87,92 @@
           </div>
         </div>
       </div>
-
-      
-      <div class="card posts">
-        <div class="card-body post">
-          
-          {% if user %}
-          <div class="post_header">
-            <div class="post_header_main">
-             
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                {{user.username}}
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
+    
+      {% for image in image_list %}
+        <div>
+          <div class="card posts">
+            <div class="card-body post">
+              <div class="post_header">
+                <div class="post_header_main">
+                  <img class="img_circle" width="32px" height="32px" src="{{user.profile_image.url}}">
+                  <a class="post_header_main_id" href="user.profile_image.url">
+                    {{image.post.author}}
+                  </a>
+                </div>
+                <div class="post_header_more">
+                  <div class="post_header_more_btn_box">
+                    <a href="#">
+                      <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
+                    </a>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <div class="post_dots">
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-                <div style="width: 7px"></div>
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
+              <div class="post_img">
+                <img width="100%" src="{{image.image.url}}">
+                <div class="post_icon_box_slide">
+                  <div class="post_dots">
+                    <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
+                    <div style="width: 7px"></div>
+                    <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              {% if like %}
-                <a href="/like/{{ 1 }}/">
+              <div class="post_icon_box">
+                <div class="post_icons">
+                {% if like %}
+                  <a href="/like/{{ 1 }}/">
                   <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
                 {% else %}
-                <a href="/like/{{ 1 }}/">
+                  <a href="/like/{{ 1 }}/">
                   <img width="22px" height="22px" src="/static/images/icon_heart_fill.png"></a>
-              {% endif %}
+                {% endif %}
+                  <a href="#">
+                    <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
+                  <a href="#">
+                    <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
+                </div>
+                <div class="post_icon_box_bookmark">
+                  <a href="#">
+                    <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
+                </div>
+              </div>
+              <div class="post_like_box">
+                <img class="img_circle" width="20px" height="20px" src="{{user.profile_image.url}}">
+                <a class="post_text_id" href="#">
+                  bongsem</a>님
+                <a class="post_text_id" href="#">
+                  여러명</a>이 좋아합니다
+              </div>
+              <div class="post_text_box">
+                <a class="post_text_id" href="#">
+                  {{image.post.author}}</a>
+                {{image.post.content}}
+                <span class="post_text_btn" name="{{image.post_id}}" onclick="view_post_text_more('{{image.post_id}}')">
+                  ... 더보기
+                </span>
+                <div class="post_text_more" name="{{image.post_id}}">
+                  123<br>
+                </div>
 
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
+                <div class="post_text_btn">댓글 2개 모두 보기</div>
+              </div>
+              <div class="post_d-day">
+                1일전
+              </div>
+              <div class="post_comment_input_box">
+                <div class="post_comment_imoge_box">
+                  <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+                </div>
+                <input name="1" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                <button class="post_comment_input_btn" name="1" style="opacity: 0.5;">
+                  게시
+                </button>
+              </div>
             </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="1" onclick="view_post_text_more('1')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="1">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-
-              {% if comments %}
-               <br> <a href='{{comments.post_id}}/'class="post_text_btn">댓글 {{comments.count}}개 모두 보기</a>
-
-               {%else%}
-              <div class="post_text_btn">댓글 0개 모두 보기</div>
-                
-              {%endif%}
-
-          </div>
-            
-
-            {%if comments%}
-
-            <div>{{comment.content}}</div>
-
-            {% endif %}
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-
-            <form method = 'post' action="/comment/{{ 1 }}/">
-              {% csrf_token %}
-              <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-              <button class="post_comment_input_btn" name="1" style="opacity: 0.5;">
-                게시
-              </button>
-            </form>
-              {% endif %}
           </div>
         </div>
+        <div>
+        {% endfor %}
+        {% include 'post/side_section.html' %}
       </div>
-    {% include 'post/side_section.html' %}
-  </div>
-{% endblock %}
+    {% endblock %}

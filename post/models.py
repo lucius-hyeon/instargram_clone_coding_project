@@ -26,7 +26,9 @@ class ImageModel(models.Model):
     class Meta:
         db_table = 'image'
     post = models.ForeignKey(PostModel, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='media', default=False)
+    image = models.ImageField(upload_to='media')
+    image_name = models.CharField(max_length=256, null=True)
+
 
 
 class CommentModel(models.Model):

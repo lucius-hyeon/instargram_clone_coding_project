@@ -26,8 +26,8 @@ import re
 #     except FollowModel.DoesNotExist:
 #         FollowModel.objects.create(user=user, follow=follow)
 
-@login_required(login_url='user:login')
-def switch_follow(request,user_id):
+@login_required(login_url='login')
+def switch_follow(request, user_id):
     user = UserModel.objects.get(pk=request.user.id)
     follow = UserModel.objects.get(pk=user_id)
 
@@ -36,48 +36,47 @@ def switch_follow(request,user_id):
         follower.delete()
     except FollowModel.DoesNotExist:
         FollowModel.objects.create(user=user, follow=follow)
-    return JsonResponse({'msg':'success'})
+    return JsonResponse({'msg': 'success'})
 
 
 def join(request):
-    if request.method=='GET':
+    if request.method == 'GET':
         return render(request, 'user/join.html')
 
-    elif request.method=='POST':
-        
-        check_email = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    elif request.method == 'POST':
 
-        username=request.POST.get('username', None)
-        nickname = request.POST.get('nickname',None)
-        password=request.POST.get('password', None)
-        password2=request.POST.get('password2', None)
-        email=request.POST.get('email',None)
-        
-        #정규표현식으로 email check
+        check_email = re.compile(
+            '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+
+        username = request.POST.get('username', None)
+        nickname = request.POST.get('nickname', None)
+        password = request.POST.get('password', None)
+        password2 = request.POST.get('password2', None)
+        email = request.POST.get('email', None)
+
+        # 정규표현식으로 email check
         check_email = check_email.match(email)
 
         if check_email is None:
-            return render(request, 'user/join.html',{'error':'이메일 양식이 올바르지 않습니다.'}) 
+            return render(request, 'user/join.html', {'error': '이메일 양식이 올바르지 않습니다.'})
 
-        if username == '' or nickname =='' or password =='' or email == '':
-            return render(request, 'user/join.html',{'error':'입력란을 모두 채워주세요'})
-        
+        if username == '' or nickname == '' or password == '' or email == '':
+            return render(request, 'user/join.html', {'error': '입력란을 모두 채워주세요'})
+
         if password != password2:
-            return render(request, 'user/join.html',{'error':'비밀번호가 일치하지 않습니다.'})
-        
-        
-        
-        exist_user = get_user_model().objects.filter(email = email)
+            return render(request, 'user/join.html', {'error': '비밀번호가 일치하지 않습니다.'})
+
+        exist_user = get_user_model().objects.filter(email=email)
         if exist_user:
-            return render(request, 'user/join.html',{'error':'이미 가입된 이메일 계정입니다.'})
+            return render(request, 'user/join.html', {'error': '이미 가입된 이메일 계정입니다.'})
 
         else:
 
             UserModel.objects.create_user(
-                username = username,
-                nickname = nickname,
-                password = password,
-                email = email,      
+                username=username,
+                nickname=nickname,
+                password=password,
+                email=email,
             )
             return render(request, 'user/login.html')
 
@@ -86,25 +85,26 @@ def join(request):
 def login(request):
     if request.method == 'GET':
         return render(request, 'user/login.html')
-    
-    elif request.method == 'POST':
-        check_email = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
 
-        email = request.POST.get('email',None)
-        password = request.POST.get('password',None)
+    elif request.method == 'POST':
+        check_email = re.compile(
+            '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+
+        email = request.POST.get('email', None)
+        password = request.POST.get('password', None)
 
         check_email = check_email.match(email)
 
         if check_email is None:
-            return render(request, 'user/login.html',{'error':'이메일 양식이 올바르지 않습니다.'})
+            return render(request, 'user/login.html', {'error': '이메일 양식이 올바르지 않습니다.'})
 
-        #입력란 빈칸일때
-        if email =='':
-            return render(request, 'user/login.html',{'error':'메일을 입력해주세요.'})
-        elif password =='':
-            return render(request, 'user/login.html',{'error':'패스워드를 입력해주세요.'})
+        # 입력란 빈칸일때
+        if email == '':
+            return render(request, 'user/login.html', {'error': '메일을 입력해주세요.'})
+        elif password == '':
+            return render(request, 'user/login.html', {'error': '패스워드를 입력해주세요.'})
 
-        #authenticate is only allowed username.
+        # authenticate is only allowed username.
         # find username
         username = UserModel.objects.get(email = email).username
 
@@ -124,18 +124,14 @@ def login(request):
 
             }
             return render(request, 'index.html' )
-
         else:
-            return render(request, 'user/login.html',{'error':'유저 정보를 찾을 수 없습니다.'})
-
-
+            print('로그인 실패')
+            return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
 
 
 ### 로그아웃 ###
 @login_required
 def logout(request):
     auth.logout(request)
-    return redirect('user/login')
+    return redirect('/')
 
-
-            
