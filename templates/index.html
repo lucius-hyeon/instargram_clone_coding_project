@@ -5,7 +5,7 @@
       cursor: pointer;
     }
   </style>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
 {% endblock %}
 
 {% block content%}
@@ -87,7 +87,6 @@
           </div>
         </div>
       </div>
-    
       {% for image in image_list %}
         <div>
           <div class="card posts">
@@ -119,13 +118,8 @@
               </div>
               <div class="post_icon_box">
                 <div class="post_icons">
-                {% if like %}
-                  <a href="/like/{{ 1 }}/">
-                  <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-                {% else %}
-                  <a href="/like/{{ 1 }}/">
-                  <img width="22px" height="22px" src="/static/images/icon_heart_fill.png"></a>
-                {% endif %}
+                  <a href="#">
+                    <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
                   <a href="#">
                     <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
                   <a href="#">
