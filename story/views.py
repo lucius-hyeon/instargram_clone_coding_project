@@ -5,16 +5,8 @@ from django.utils import timezone
 from datetime import timedelta
 from user.models import FollowModel, UserModel
 from .models import Story, StoryViewed
-# Create your views here.
-# 사용자와 팔로우 한사람들 가져온다
-# 팔로우 한 사람들의 스토리가 24시간이 지난 것들은 업데이트 해준다
-# 그 다음 스토리뷰 모델에 작성자의 스토리가 있다면 본 스토리에 넣는다
-# 팔로우 한 사람들의 스토리를 담는다(시간 정보 작성자, 이미지)
 
-# 나의 그림을 맨 앞으로 뺀다
-# 봤을 경우 그 사람의 스토리뷰에 모두 추가한다
-# 나의 스토리가 없다면 업데이트하게 만들어준다.
-# 스토리 삭제의 경우 작성자가 현재의 유저와 같아야 삭제 가능하게 만든다.
+
 @login_required(login_url='login')
 def create_story(request):
     user = request.user
@@ -51,14 +43,14 @@ def get_storys_author(request):
                 story.save()
                 continue
             instance_list.append(story)
-        for story in instance_list:
-            try:
-                StoryViewed.objects.get(story = story, user = user)
+        if len(instance_list) != 0:
+            for story in instance_list:
+                try:
+                    StoryViewed.objects.get(story = story, user = user)
+                except StoryViewed.DoesNotExist:
+                    story_authors.append(story.author)
+                    break
+            else:
                 viewed_story_authors.append(story.author)
-                # viewed_storys.append({ story.author : instance_list })
-                break
-            except StoryViewed.DoesNotExist:
-                story_authors.append(story.author)
-                # storys.append({ story.author :instance_list})
-                break
+
     return story_authors, viewed_story_authors

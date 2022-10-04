@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'post',
     'story',
 
-
     # #all-auth
     # 'allauth',
     # 'allauth.account',

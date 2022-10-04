@@ -81,7 +81,7 @@
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_add.png" id="add_feed"></a>
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_find.png"></a>
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_heart_empty.png"></a>
-          <a href="#"><img class="img_circle" width="24px" height="24px" src="/static/images/img_profile.jpg"></a>
+          <a href="{% url 'profile' user.nickname %}"><img class="img_circle" width="24px" height="24px" src="{{user.profile_image.url}}"></a>
         </div>
       </div>
 

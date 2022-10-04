@@ -1,7 +1,7 @@
 import re
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from post.models import ImageModel, PostModel
+from post.models import BookMarkModel, ImageModel, PostModel
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 # Create your views here.
@@ -30,7 +30,7 @@ def post_add(request):
 @login_required(login_url='login')
 def index(request):
     user = request.user
-    followers = FollowModel.objects.filter(user=user)[:6]
+    followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
     all_story_author = get_storys_author(request)
     context = {
         'followers': followers,
@@ -41,8 +41,29 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def profile(request, username):
-    context = {}
+def profile(request, nickname):
+    user = request.user
+    print(dir(user))
+    print(user.follow)
+    author = UserModel.objects.get(nickname = nickname)
+    author_post = PostModel.objects.filter(author = author)
+    author_bookmark_post = [mark.post for mark in BookMarkModel.objects.filter(user = author)]
+    author_following = [men.follow for men in FollowModel.objects.filter(user = author)]
+    author_follower = [men.user for men in FollowModel.objects.filter(follow = author)]
+    is_author = False
+    if nickname == user.nickname:
+        is_author = True
+    for post in author_post:
+
+        post_dict = {"thumbnail":'', 'post' : ''}
+    context = {
+        'author' : author,
+        'author_post' : author_post,
+        'author_bookmark_post' : author_bookmark_post,
+        'author_following' : author_following,
+        'author_follower' : author_follower,
+        'is_author' : is_author,
+    }
     return render(request, 'post/profile.html', context)
 
 
