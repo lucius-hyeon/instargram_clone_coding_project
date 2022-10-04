@@ -44,18 +44,7 @@ INSTALLED_APPS = [
     # 'django.contrib.sites.models.Site',
     'user',
     'post',
-<<<<<<< HEAD
     'story',
-
-    # #all-auth
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-
-    # #provide
-    # 'allauth.socialaccount.providers.kakao'
-=======
->>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
 ]
 
 MIDDLEWARE = [
