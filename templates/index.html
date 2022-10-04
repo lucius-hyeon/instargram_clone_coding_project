@@ -19,8 +19,8 @@
             <div class="card-body post">
               <div class="post_header">
                 <div class="post_header_main">
-                  <img class="img_circle" width="32px" height="32px" src="{{user.profile_image.url}}">
-                  <a class="post_header_main_id" href="user.profile_image.url">
+                  <img class="img_circle" width="32px" height="32px" src="{{image.post.author.profile_image.url}}">
+                  <a class="post_header_main_id" href="{% url 'profile' image.post.author.nickname %}">
                     {{image.post.author}}
                   </a>
                 </div>

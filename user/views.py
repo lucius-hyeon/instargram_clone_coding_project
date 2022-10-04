@@ -133,13 +133,9 @@ def get_random_nickname():
 
 def get_random_password():
     rand_str = ''
-    while True:
-        for _ in range(30):
-            rand_str += str(random.choice(string.ascii_letters + string.digits))
-        if UserModel.objects.filter(nickname=rand_str).exists():
-            pass
-        else:
-            return rand_str
+    for _ in range(30):
+        rand_str += str(random.choice(string.ascii_letters + string.digits))
+    return rand_str
 
 
 def kakao_social_login(request):
