@@ -12,11 +12,14 @@ class PostModel(models.Model):
 
     author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     content = models.TextField()
-    liker = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name='post_liker')
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+
+    def __str__(self):
+        return f'{self.author} / {self.created_at}'
+
 
 
 class ImageModel(models.Model):
@@ -24,6 +27,8 @@ class ImageModel(models.Model):
         db_table = 'image'
     post = models.ForeignKey(PostModel, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='media')
+    image_name = models.CharField(max_length=256, null=True)
+
 
 
 class CommentModel(models.Model):
@@ -44,3 +49,11 @@ class BookMarkModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     post = models.ForeignKey(PostModel, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_bookmark = models.BooleanField(default = False)
+
+class LikeModel(models.Model):
+    class Meta:
+        db_table = 'like'
+    user = models.ForeignKey(UserModel, on_delete = models.CASCADE, related_name='user_like')
+    post = models.ForeignKey(PostModel, on_delete=models.CASCADE,related_name='post_like')
+    is_like = models.BooleanField(default=False)

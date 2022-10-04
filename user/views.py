@@ -77,8 +77,6 @@ def login(request):
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
 
-        print(email, password)
-
         check_email = check_email.match(email)
 
         if check_email is None:
@@ -92,17 +90,24 @@ def login(request):
 
         # authenticate is only allowed username.
         # find username
-        username = UserModel.objects.get(email=email).username
-        # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
+        username = UserModel.objects.get(email = email).username
+
+        print(username)
+        #User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
         user = auth.authenticate(request, username=username, password=password)
 
         if user is not None:
-
             auth.login(request, user)  # 로그인 처리
-            print('로그인 성공')
-            return redirect('/')
-            # return render(request, 'index.html')
 
+
+            user = request.user
+            print(user.nickname, user, user.username)
+
+            userinfo ={
+                # 'followers': followers,
+
+            }
+            return render(request, 'index.html' )
         else:
             print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
@@ -114,6 +119,7 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
+<<<<<<< HEAD
 
 def get_random_nickname():
     rand_str = ''
@@ -208,3 +214,5 @@ def get_profile(request, nickname):
     print(dir(request.user))
     context = {}
     return render(request, 'user/profile.html', context)
+=======
+>>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
