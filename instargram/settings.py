@@ -45,13 +45,6 @@ INSTALLED_APPS = [
     'user',
     'post',
 
-    #all-auth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    #provide
-    'allauth.socialaccount.providers.kakao'
 ]
 
 MIDDLEWARE = [
@@ -77,8 +70,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
-
             
             ],
         },
@@ -163,14 +154,3 @@ MEDIA_URL = 'uploads/'  # 업로드할 경로
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # 로컬 디렉토리 어디에 저정할 것인지
 
 
-#all-auth setting
-AUTHENTICATION_BACKENDS =(
-    'django.contrib.auth.backends.ModelBackend',
-
-    'allauth.account.auth_backends.AuthenticationBackend'
-)
-
-SITE_ID = 2
-LOGIN_REDIRECT_URL = 'index' # 로그인 후 리디렉션할 페이지
-ACCOUNT_LOGOUT_REDIRECT_URL = "index"  # 로그아웃 후 리디렉션 할 페이지
-ACCOUNT_LOGOUT_ON_GET = True # 로그아웃 버튼 클릭 시 자동 로그아웃

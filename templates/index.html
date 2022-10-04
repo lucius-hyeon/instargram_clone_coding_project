@@ -5,6 +5,7 @@
   cursor: pointer;
 }
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
 {% endblock %}
 {% block content%}
@@ -87,13 +88,17 @@
         </div>
       </div>
 
+      
       <div class="card posts">
         <div class="card-body post">
+          
+          {% if user %}
           <div class="post_header">
             <div class="post_header_main">
+             
               <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
               <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
+                {{user.username}}
               </a>
             </div>
             <div class="post_header_more">
@@ -116,8 +121,14 @@
           </div>
           <div class="post_icon_box">
             <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
+              {% if like %}
+                <a href="/like/{{ 1 }}/">
+                  <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
+                {% else %}
+                <a href="/like/{{ 1 }}/">
+                  <img width="22px" height="22px" src="/static/images/icon_heart_fill.png"></a>
+              {% endif %}
+
               <a href="https://velog.io/@kimphysicsman">
                 <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
               <a href="https://velog.io/@kimphysicsman">
@@ -147,8 +158,23 @@
               <br><br>
               하지만 너무가 더워 ㅠ
             </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
+
+              {% if comments %}
+               <br> <a href='{{comments.post_id}}/'class="post_text_btn">댓글 {{comments.count}}개 모두 보기</a>
+
+               {%else%}
+              <div class="post_text_btn">댓글 0개 모두 보기</div>
+                
+              {%endif%}
+
           </div>
+            
+
+            {%if comments%}
+
+            <div>{{comment.content}}</div>
+
+            {% endif %}
           <div class="post_d-day">
             1일전
           </div>
@@ -156,158 +182,18 @@
             <div class="post_comment_imoge_box">
               <img width="24px" height="24px" src="/static/images/icon_imoge.png">
             </div>
-            <input name="1" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="1" style="opacity: 0.5;">
-              게시
-            </button>
+
+            <form method = 'post' action="/comment/{{ 1 }}/">
+              {% csrf_token %}
+              <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+              <button class="post_comment_input_btn" name="1" style="opacity: 0.5;">
+                게시
+              </button>
+            </form>
+              {% endif %}
           </div>
         </div>
       </div>
-      <div class="card posts">
-        <div class="card-body post">
-          <div class="post_header">
-            <div class="post_header_main">
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-            </div>
-          </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
-            </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="2" onclick="view_post_text_more('2')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="2">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
-          </div>
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-            <input name="2" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="2" style="opacity: 0.5;">
-              게시
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="card posts">
-        <div class="card-body post">
-          <div class="post_header">
-            <div class="post_header_main">
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-            </div>
-          </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
-            </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="3" onclick="view_post_text_more('3')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="3">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
-          </div>
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-            <input name="3" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="3" style="opacity: 0.5;">
-              게시
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
     {% include 'post/side_section.html' %}
   </div>
 {% endblock %}

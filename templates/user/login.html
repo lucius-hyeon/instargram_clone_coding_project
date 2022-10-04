@@ -18,12 +18,12 @@
     <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Overpass+Mono" rel="stylesheet">
     <link href="/static/css/login_style.css" rel="stylesheet"/>
 
-<div id="wrapper">
+<div class="top">
   <div class="main-content">
     <div class="header">
       <img src="https://i.imgur.com/zqpwkLQ.png" />
     </div>
-    <form action ='/login/' method="post">
+    <form action ='/user/login/' method="post">
       {% csrf_token %}
     <div class="l-part">
       <input type="text" placeholder="이메일" class="input-1" name='email'/>
@@ -36,10 +36,6 @@
         </div>
       {% endif%}
       <input type="submit" value="로그인" class="btn" />
-      {% load socialaccount %}
-      <button>
-        <a href = "{% provider_login_url 'kakao' method= 'oauth2 %}">카카오 로그인</a>
-      </button>
     </div>
   </div>
   </form>
