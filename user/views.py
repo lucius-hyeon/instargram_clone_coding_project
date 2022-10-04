@@ -66,6 +66,7 @@ def join(request):
 
 ### 로그인 ###
 
+
 def login(request):
     if request.method == 'GET':
         return render(request, 'user/login.html')
@@ -90,24 +91,23 @@ def login(request):
 
         # authenticate is only allowed username.
         # find username
-        username = UserModel.objects.get(email = email).username
+        username = UserModel.objects.get(email=email).username
 
         print(username)
-        #User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
+        # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
         user = auth.authenticate(request, username=username, password=password)
 
         if user is not None:
             auth.login(request, user)  # 로그인 처리
 
-
             user = request.user
             print(user.nickname, user, user.username)
 
-            userinfo ={
+            userinfo = {
                 # 'followers': followers,
 
             }
-            return render(request, 'index.html' )
+            return render(request, 'index.html')
         else:
             print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
@@ -119,27 +119,27 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
-<<<<<<< HEAD
 
 def get_random_nickname():
     rand_str = ''
     while True:
         for _ in range(10):
             rand_str += str(random.choice(string.ascii_letters + string.digits))
-        if UserModel.objects.filter(nickname = rand_str).exists():
+        if UserModel.objects.filter(nickname=rand_str).exists():
             pass
         else:
             return rand_str
+
+
 def get_random_password():
     rand_str = ''
     while True:
         for _ in range(30):
             rand_str += str(random.choice(string.ascii_letters + string.digits))
-        if UserModel.objects.filter(nickname = rand_str).exists():
+        if UserModel.objects.filter(nickname=rand_str).exists():
             pass
         else:
             return rand_str
-
 
 
 def kakao_social_login(request):
@@ -150,37 +150,39 @@ def kakao_social_login(request):
             f'https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code'
         )
 
+
 def kakao_social_login_callback(request):
-    try :
+    try:
         code = request.GET.get('code')
         client_id = 'b69e5d10ed989fce828f23f98a5265d9'
         redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback'
         token_request = requests.post(
-            'https://kauth.kakao.com/oauth/token', {'grant_type':'authorization_code','client_id':client_id, 'redierect_uri': redirect_uri, 'code':code}
+            'https://kauth.kakao.com/oauth/token', {'grant_type': 'authorization_code',
+                                                    'client_id': client_id, 'redierect_uri': redirect_uri, 'code': code}
         )
         # token_request = requests.get(
-            # f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}'
+        # f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}'
         # )
         token_json = token_request.json()
 
         error = token_json.get('error', None)
 
-        if error is not None :
+        if error is not None:
             print(error)
-            return JsonResponse({"message": "INVALID_CODE"}, status = 400)
+            return JsonResponse({"message": "INVALID_CODE"}, status=400)
 
         access_token = token_json.get("access_token")
 
     except KeyError:
-        return JsonResponse({"message" : "INVALID_TOKEN"}, status = 400)
+        return JsonResponse({"message": "INVALID_TOKEN"}, status=400)
 
     except access_token.DoesNotExist:
-        return JsonResponse({"message" : "INVALID_TOKEN"}, status = 400)
-    
+        return JsonResponse({"message": "INVALID_TOKEN"}, status=400)
+
         #------get kakaotalk profile info------#
 
     profile_request = requests.get(
-        "https://kapi.kakao.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"},
+        "https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
     kakao_id = profile_json.get('id')
@@ -189,30 +191,28 @@ def kakao_social_login_callback(request):
     print(profile_json)
     print(kakao_id)
     print(username)
-   
-    if UserModel.objects.filter(kakao_id = kakao_id).exists():
-        user = UserModel.objects.get(kakao_id = kakao_id)
+
+    if UserModel.objects.filter(kakao_id=kakao_id).exists():
+        user = UserModel.objects.get(kakao_id=kakao_id)
         auth.login(request, user)  # 로그인 처리
     else:
         # 내일 username, nickname, email, 등 확정 짓기
         # username : 진짜 이름, nickname : 아이디, email : 이메일(필수 x);필수가 아니라면?
         UserModel.objects.create(
-          username = username,
-          nickname = get_random_nickname(), # usermodel에 없을 때 까지 생성 후 리턴
-          password = get_random_password(),
-          kakao_id = kakao_id,
+            username=username,
+            nickname=get_random_nickname(),  # usermodel에 없을 때 까지 생성 후 리턴
+            password=get_random_password(),
+            kakao_id=kakao_id,
         )
-        user = UserModel.objects.get(kakao_id = kakao_id)
+        user = UserModel.objects.get(kakao_id=kakao_id)
         auth.login(request, user)
     return redirect('/')
 
     # kakao_id = profile_json.get("id")
 
-    
+
 def get_profile(request, nickname):
     print(request)
     print(dir(request.user))
     context = {}
     return render(request, 'user/profile.html', context)
-=======
->>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
