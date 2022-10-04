@@ -1,9 +1,14 @@
 <div class="profile_box" id="profile_box" style="padding: 10px;">
   <div class="my_account">
+<<<<<<< HEAD
     <div class="my_profile" onclick="location.href=`{% url 'profile' user.nickname %}`">
       <img class="img_circle" width="50px" height="50px" src="{{user.profile_image.url}}">
+=======
+  
+>>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
     </div>
     <div class="my_id" onclick="location.href=''">
+   <!-- 여기 코드 지워짐 -->
       <p style="line-height: 0.5; font-weight: 500">{{user.username}}</p>
       <p style="line-height: 0.3; color: #909090;">{{user.bio}}</p>
     </div>

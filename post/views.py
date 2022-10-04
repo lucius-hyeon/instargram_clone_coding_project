@@ -3,8 +3,10 @@ from uuid import uuid4
 from django.core.files.storage import FileSystemStorage  # 파일저장
 
 import re
-from django.shortcuts import render
+from xml.etree.ElementTree import Comment
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 <<<<<<< HEAD
 from post.models import BookMarkModel, ImageModel, PostModel
 =======
@@ -13,6 +15,13 @@ from post.models import ImageModel, PostModel
 >>>>>>> 205eb4a2264ed4b71fcd9751e450a4175eca95c5
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
+=======
+from django.http import JsonResponse
+from instargram.settings import MEDIA_ROOT
+from post.models import ImageModel, PostModel, LikeModel, CommentModel
+from user.models import FollowModel, UserModel
+
+>>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
 # Create your views here.
 
 
@@ -50,6 +59,7 @@ def post_add(request):
 
 @login_required(login_url='login')
 def index(request):
+<<<<<<< HEAD
     user = request.user
 <<<<<<< HEAD
     followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
@@ -69,6 +79,23 @@ def index(request):
 >>>>>>> 205eb4a2264ed4b71fcd9751e450a4175eca95c5
         # 'storys' : get_sorted_story(user),
     }
+=======
+    if request.method == 'GET':
+
+        user = request.user
+        post_list = PostModel.objects.all().order_by('-id')
+        image_list = ImageModel.objects.all().order_by('-post_id')
+        followers = FollowModel.objects.filter(user=user)[:6]
+
+        cm = CommentModel.objects.all()
+        context = {
+            'followers': followers,
+            'post_list': post_list,
+            'image_list': image_list,
+            'comments': cm
+            # 'storys' : get_sorted_story(user),
+        }
+>>>>>>> 95306eb67f2a33f00fd3b1d3cb1e1a6f9c6b84ac
     return render(request, 'index.html', context)
 
 
@@ -120,3 +147,113 @@ def recommand_user(request, username):
     context = {'unfollowers': unfollowers}
     print(list(set(unfollowers)))
     return render(request, 'post/recommand.html', context)
+
+
+@login_required
+def comment(request, post_id):
+    if request.method == 'POST':
+
+        content = request.POST.get('content')
+
+        if content == '':
+            return redirect('/')
+
+        user = request.user
+        post = PostModel.objects.get(id=post_id)
+
+        cm = CommentModel()
+        cm.content = content
+        cm.author = user
+        # cm.liker = liker.set()
+        cm.post = post
+        cm.save()
+
+        return redirect('/')
+
+
+@login_required
+def comments_list(request, post_id):
+    if request.method == 'GET':
+        print('댓글 get 실행')
+        # post = PostModel.objects
+        # cm = CommentModel.objects.filter(post_id = post_id)
+
+        # return render(request, 'index.html', {'comment':cm})
+        return render(request, 'index.html')
+
+# @login_required
+# def is_like(request, post_id):
+#     if request.method =='GET':
+#         like_model = LikeModel() #라이크 모델 인스턴스
+#         user = request.user #유저 불러오기
+
+#         post = PostModel.objects.get(id = post_id) # 포스트 아이디 참조
+
+
+#         try:
+#             is_like = LikeModel.objects.get(post = post, user = user)
+
+#             if is_like =='True' :
+#                 print('True')
+#             else:
+#                 print('false')
+
+#             like_model.save()
+
+#             return render(request, 'index.html', {'like':is_like})
+
+#         except LikeModel.DoesNotExist:
+#             print('예예외')
+#             #데이터가 없으면 true로 바꿔준다ㅣ.
+#             like_model.is_like = True
+#             like_model.post = post
+#             like_model.user = user
+#             like_model.save()
+
+#             return render(request, 'index.html', {'like':is_like})
+
+
+@login_required
+def is_like(request, post_id):
+    if request.method == 'GET':
+        like_model = LikeModel()  # 라이크 모델 인스턴스
+        user = request.user  # 유저 불러오기
+
+        post = PostModel.objects.get(id=post_id)  # 포스트 아이디 참조
+
+        print(post)
+        print(like_model)
+
+        try:
+            is_like = LikeModel.objects.get(post=post, user=user)
+            is_like.delete()
+
+            return render(request, 'index.html', {'like': False})
+
+        except LikeModel.DoesNotExist:
+            like_model.is_like = True
+            like_model.post = post
+            like_model.user = user
+            like_model.save()
+
+            print(like_model)
+
+            return render(request, 'index.html', {'like': True})
+
+
+@login_required
+def post_like(request, post_id):
+    if request.method == 'GET':
+        user = request.user  # 유저 불러오기
+
+        post = PostModel.objects.get(pk=post_id)  # 포스트 아이디 참조
+
+        try:
+            like = LikeModel.objects.get(post=post, user=user)
+            like.delete()
+            return JsonResponse({'msg': 'unlike'})
+        except LikeModel.DoesNotExist:
+            print('예예외')
+
+            LikeModel.objects.create(user=user, post=post, is_like=True)
+            return JsonResponse({'msg': 'like'})
