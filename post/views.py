@@ -54,7 +54,7 @@ def index(request):
 
         user = request.user
         post_list = PostModel.objects.all().order_by('-id')
-        image_list = ImageModel.objects.all().order_by('-post_id')
+        # image_list = ImageModel.objects.all().order_by('-post_id')
         # followers = FollowModel.objects.filter(user=user)[:6]
         followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
         all_story_author = get_storys_author(request)
@@ -63,7 +63,7 @@ def index(request):
         context = {
             'followers': followers,
             'post_list': post_list,
-            'image_list': image_list,
+            # 'image_list': image_list,
             'comments': cm,
             'authors' : all_story_author[0],
             'viewed_authors' : all_story_author[1],
@@ -73,8 +73,7 @@ def index(request):
 
 def profile(request, nickname):
     user = request.user
-    print(dir(user))
-    print(user.follow)
+
     author = UserModel.objects.get(nickname = nickname)
     author_post = PostModel.objects.filter(author = author)
     author_bookmark_post = [mark.post for mark in BookMarkModel.objects.filter(user = author)]

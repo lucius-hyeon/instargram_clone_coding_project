@@ -11,9 +11,11 @@ from .models import Story, StoryViewed
 def create_story(request):
     user = request.user
     image = request.POST.get('image', '')
+    print(image)
     if image == '':
         return redirect('/')
-    Story.objects.create(author = user, image =  image)
+    # Story.objects.create(author = user, image =  image)
+    return redirect('/')
 
 
 @login_required(login_url='login')

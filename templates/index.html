@@ -10,9 +10,39 @@
 
 {% block content%}
   <!--본문 부분-->
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{% url 'create_story' %}" method="POST">
+          {%csrf_token%}
+        <div class="modal-body">
+            <input class="form-control" type="file" name="image">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary">스토리 공유</button>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
   <div class="main_body" id="main_body">
     <div class="post_box" id-="post_box">
+     
       {% include 'story/story.html' %}
+
+      {% for post in post_list %}
+      {{post.author}}, {{post.created_at}}
+      {{post.imagemodel_set.all }}
+      {% endfor %}
+
       {% for image in image_list %}
         <div>
           <div class="card posts">
