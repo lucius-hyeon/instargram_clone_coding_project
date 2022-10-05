@@ -1,3 +1,4 @@
+from atexit import register
 from email.mime import image
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -11,14 +12,16 @@ from .models import Story, StoryViewed
 def create_story(request):
     user = request.user
     image = request.POST.get('image', '')
+    print(image)
     if image == '':
         return redirect('/')
-    Story.objects.create(author = user, image =  image)
+    Story.objects.create(author = user, image =  f'story/{image}')
+    return redirect('/')
 
 
 @login_required(login_url='login')
-def view_story(request, username):
-    author = UserModel.objects.get(username = username)
+def view_story(request, nickname):
+    author = UserModel.objects.get(nickname = nickname)
     user = request.user
     storys = Story.objects.filter(author = author, is_end = False)
     for story in storys:
@@ -54,3 +57,11 @@ def get_storys_author(request):
                 viewed_story_authors.append(story.author)
 
     return story_authors, viewed_story_authors
+
+
+def simple_time(value):
+    if 'hour' in value:
+        value = value.split('hour')[0]
+        return f'{value}시간'
+    value = value.split(' ')[0]
+    return f'{value}분'

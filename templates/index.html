@@ -11,8 +11,29 @@
 {% block content%}
 
   <!--본문 부분-->
+   <!-- Modal -->
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">스토리 공유하기</h5>
+        </div>
+        <form action="{% url 'create_story' %}" method="POST">
+          {%csrf_token%}
+        <div class="modal-body">
+            <input class="form-control" type="file" name="image">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary">스토리 공유</button>
+          </div>
+        </form>
+        </div>
+    </div>
+  </div>
   <div class="main_body" id="main_body">
     <div class="post_box" id-="post_box">
+     
       {% include 'story/story.html' %}
       {% for post in post_list %}
         <div>
@@ -117,7 +138,6 @@
                         {% endif %}
                       </div>
                     {% endfor %}
-                  </dvi>
                 </div>
               </div>
               <div class="post_d-day" style="font-size: 13px;">
