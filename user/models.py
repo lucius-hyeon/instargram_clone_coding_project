@@ -22,3 +22,7 @@ class FollowModel(models.Model):
     follow = models.ForeignKey(
         UserModel, on_delete=models.CASCADE, related_name='follow')
 
+
+
+# 아마 제이쿼리 버전이 달라서?
+# 
