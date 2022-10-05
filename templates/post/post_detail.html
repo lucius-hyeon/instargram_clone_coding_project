@@ -368,7 +368,9 @@
 
     let fd = new FormData();
 
-    fd.append('file', file[0]);
+    if (file != undefined) {
+      fd.append('file', file[0]);
+    };
     fd.append('image', image);
     fd.append('content', content);
     console.log(fd.get('content'));
@@ -377,12 +379,12 @@
     } else if (content.length <= 0) {
       alert("설명을 입력하세요");
     } else {
-      writeFeed(fd);
+      editFeed(fd);
       //console.log(files[0]);
     }
   });
 
-  function writeFeed(fd) {
+  function editFeed(fd) {
     $.ajax({
       url: "../../post/update/{{post.id}}/",
       data: fd,
