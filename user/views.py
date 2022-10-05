@@ -61,7 +61,7 @@ def join(request):
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 이메일 계정입니다.'})
 
-        #nickname 중복체크
+        #nickname 중복체크 추가
         exist_user = get_user_model().objects.filter(nickname=nickname)
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 사용자 이름 입니다.'})
@@ -227,6 +227,7 @@ def get_profile(request, nickname):
 
 @login_required
 def update(request):
+    #도움이 필요합니다 닉네임 중복처리
     if request.method == 'GET':
         return render(request, 'user/update.html')
 
