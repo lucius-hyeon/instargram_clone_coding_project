@@ -77,9 +77,11 @@
             <div style="font-size: 26px; margin-right: 40px">
                 {{ author.nickname }}
             </div>
-            {% if is_author%}
-            <button id="button_profile_upload" style="margin-right: 40px"> 프로필 편집</button>
-            {% endif %}
+                {% if is_author%}
+                    <button type="button" onclick = "location.href = '/user/update/'" id="button_profile_upload" style="margin-right: 40px"> 프로필 편집 </button>
+                {% endif %}
+            <div>
+            </div>
         </div>
 
         <div style="margin-bottom: 20px">

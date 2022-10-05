@@ -20,6 +20,7 @@ def test_html(request):
     return render(request, 'post/test.html')
 
 
+
 @login_required(login_url='login')
 def post_add(request):
     if request.method == 'POST':

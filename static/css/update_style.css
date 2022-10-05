@@ -1,0 +1,19 @@
+.mt-3{
+    width: 350px;
+    height: 40%;
+    margin: auto;
+    background-color: #fff;
+    border: 2px solid #e6e6e6;
+    padding: 40px 50px;
+}
+
+.s-part{
+        text-align: center;
+        font-family: 'Overpass Mono', monospace;
+        word-spacing: -2px;
+        letter-spacing: -2px;
+        font-weight: normal;
+}
+.alertdanger{
+
+}

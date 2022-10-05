@@ -1,3 +1,5 @@
+from msilib.schema import ListView
+from tkinter import PhotoImage
 from django.shortcuts import render, redirect
 # from django.contrib import messages
 from .models import UserModel, FollowModel
@@ -5,11 +7,15 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+
 import re
 import requests
 import random
 import string
 
+##비밀번호 변경
+from django.contrib.auth.hashers import check_password
+from django.contrib import messages, auth
 
 @login_required(login_url='login')
 def switch_follow(request, user_id):
@@ -55,6 +61,11 @@ def join(request):
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 이메일 계정입니다.'})
 
+        #nickname 중복체크
+        exist_user = get_user_model().objects.filter(nickname=nickname)
+        if exist_user:
+            return render(request, 'user/join.html', {'error': '이미 가입된 사용자 이름 입니다.'})
+        
         else:
             UserModel.objects.create_user(
                 username=username,
@@ -65,8 +76,6 @@ def join(request):
             return render(request, 'user/login.html')
 
 ### 로그인 ###
-
-
 def login(request):
     if request.method == 'GET':
         return render(request, 'user/login.html')
@@ -107,7 +116,7 @@ def login(request):
                 # 'followers': followers,
 
             }
-            return render(request, 'index.html')
+            return redirect("/")
         else:
             print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
@@ -117,7 +126,7 @@ def login(request):
 @login_required
 def logout(request):
     auth.logout(request)
-    return redirect('/')
+    return redirect('login')
 
 
 def get_random_nickname():
@@ -212,3 +221,55 @@ def get_profile(request, nickname):
     print(dir(request.user))
     context = {}
     return render(request, 'user/profile.html', context)
+
+
+###user_update##
+
+@login_required
+def update(request):
+    if request.method == 'GET':
+        return render(request, 'user/update.html')
+
+    elif request.method == 'POST':
+        user = request.user
+
+        bio = request.POST.get('bio')
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        nickname = request.POST.get('nickname')
+
+        exist_nickname = get_user_model().objects.filter(nickname=nickname)
+        
+        if exist_nickname:
+            return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
+        else:   
+            user.nickname = nickname
+            user.bio = bio
+            user.email = email
+            user.username = username
+            user.save()
+
+        return redirect('/', user.username)
+    
+###비밀번호 변경###
+
+@login_required
+def change_password(request):
+  if request.method == "POST":
+    user = request.user
+    origin_password = request.POST["origin_password"]
+    if check_password(origin_password, user.password):
+      new_password = request.POST["new_password"]
+      confirm_password = request.POST["confirm_password"]
+      if new_password == confirm_password:
+        user.set_password(new_password)
+        user.save()
+        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return redirect('/')
+      else:
+        messages.error(request, 'Password not same')
+    else:
+      messages.error(request, 'Password not correct')
+    return render(request, 'user/change_password.html')
+  else:
+    return render(request, 'user/change_password.html')
