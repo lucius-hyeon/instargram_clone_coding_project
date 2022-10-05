@@ -62,6 +62,7 @@ def make_post(user, post_list):
     post_dict_list = []
     # instance = {
     #     'like': 0 or 1,
+    #     'like_cnt': 0 or 1,
     #     'post': PostModel...,
     #     'comments': ,
     #     'bookmark' : 0 or 1
