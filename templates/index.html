@@ -110,11 +110,8 @@
                 </div>
               </div>
               <div class="post_like_box">
-                <img class="img_circle" width="20px" height="20px" src="{{user.profile_image.url}}">
-                <a class="post_text_id" href="#">
-                  test</a>님
-                <a class="post_text_id" href="#">
-                  여러명</a>이 좋아합니다
+                <span style='font-weight: 600;'>좋아요
+                  {{post.post.post_like.all | length}}개</span>
               </div>
               <div class="post_text_box">
                 <a class="post_text_id" href="#">
@@ -157,24 +154,24 @@
                       </div>
                        
                     {% endfor %}
-                  </dvi>
                 </div>
               </div>
               <div class="post_d-day" style="font-size: 13px;">
                 {{post.post.created_at|timesince}}
               </div>
-              <div class="post_comment_input_box">
-                <div class="post_comment_imoge_box">
-                  <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-                </div>
+              <form action='comment/{{post.post.id}}/' method='post'>
+                <div class="post_comment_input_box">
+                  <div class="post_comment_imoge_box">
+                    <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+                  </div>
+
                   {%csrf_token%}
-                  <form action='comment/{{post.post.id}}/' method='post'></form>
-                    <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-                    <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
-                      게시
-                    </button>
-                  </form>
-              </div>
+                  <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                  <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
+                    게시
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
