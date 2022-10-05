@@ -43,12 +43,12 @@ def post_update(request, post_id):
     if request.method == 'POST':
 
         post = PostModel.objects.get(id=post_id)
-        # image = ImageModel.objects.get(post_id=post_id)
+        image = ImageModel.objects.get(post_id=post_id)
         post.content = request.POST.get('content', '')
-        # image.image = request.FILES.get('file')
-        # image.image_name = request.POST.get('image', '')
+        image.image = request.FILES.get('file')
+        image.image_name = request.POST.get('image', '')
         post.save()
-        # image.save()
+        image.save()
 
         # my_post = PostModel.objects.create(author=user, content=content)
         # my_image = ImageModel.objects.create(
