@@ -14,13 +14,13 @@ def create_story(request):
     print(image)
     if image == '':
         return redirect('/')
-    # Story.objects.create(author = user, image =  image)
+    Story.objects.create(author = user, image =  f'story/{image}')
     return redirect('/')
 
 
 @login_required(login_url='login')
-def view_story(request, username):
-    author = UserModel.objects.get(username = username)
+def view_story(request, nickname):
+    author = UserModel.objects.get(nickname = nickname)
     user = request.user
     storys = Story.objects.filter(author = author, is_end = False)
     for story in storys:

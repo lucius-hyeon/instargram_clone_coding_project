@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from instargram.settings import MEDIA_ROOT
 from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
+from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 
@@ -86,6 +87,7 @@ def make_post(user, post_list):
     return post_dict_list
 
 
+
 @login_required(login_url='login')
 def index(request):
     user = request.user
@@ -96,12 +98,14 @@ def index(request):
         followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
         all_story_author = get_storys_author(request)
         post_list = make_post(user, post_list)
+        user_story = Story.objects.filter(author = user, is_end = False)
 
         context = {
             'followers': followers,
             'post_list': post_list,
             'authors': all_story_author[0],
             'viewed_authors': all_story_author[1],
+            'user_story' : user_story,
         }
     return render(request, 'index.html', context)
 

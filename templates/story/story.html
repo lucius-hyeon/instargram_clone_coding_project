@@ -14,8 +14,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- Button trigger modal -->
-        <div class="story" style="position: absolute;">
-          <div class="story_img_box">
+        
+        {% if user_story.count == 0 %}
+        <div class="story row" style="position: absolute;">
+          <div class="story_img_box_none">
               <img class="img_circle story_img_outline" width="56px" height="56px" src="{{user.profile_image.url}}">
           </div>
           <p class="story_id text-center">{{user.username}}</p>
@@ -25,6 +27,16 @@
             <i class="fas fa-plus"></i>
           </button>
         </div>
+        {% else %}
+        <div class="story" style="position: absolute;">
+          <div class="story_img_box">
+            <a href="{% url 'view_story' user.nickname %}">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="{{user.profile_image.url}}">
+            </a>
+          </div>
+          <p class="story_id text-center">{{user.username}}</p>
+        </div>
+        {% endif %}
       
 
       
