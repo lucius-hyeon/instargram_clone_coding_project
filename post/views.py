@@ -118,8 +118,20 @@ def profile(request, nickname):
         mark.post for mark in BookMarkModel.objects.filter(user=author)]
     author_following = [
         men.follow for men in FollowModel.objects.filter(user=author)]
-    author_follower = [
-        men.user for men in FollowModel.objects.filter(follow=author)]
+    author_follower_1 = [
+        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists() is not None
+    ]
+    author_follower_0 = [
+        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists() is None
+    ]
+    follower_cnt = len(author_follower_0 + author_follower_1)
+
+    # 해당주인의 팔로워가 내가 팔로잉 한 사람인지 판단하는 방법은?
+        # 생각 1. followmodel에서 user = user follow = 계정주인팔로워
+
+        # 생각 2. 나의 팔로잉모델(follow추출)에서 계정 주인 팔로워가 있냐 판단
+
+        
 
     is_author = False
     if nickname == user.nickname:
@@ -130,7 +142,9 @@ def profile(request, nickname):
         'author_post': author_post,
         'author_bookmark_post': author_bookmark_post,
         'author_following': author_following,
-        'author_follower': author_follower,
+        'author_follower_0': author_follower_0,
+        'author_follower_1': author_follower_1,
+        'follower_cnt' : follower_cnt,
         'is_author': is_author,
     }
     return render(request, 'post/profile.html', context)
@@ -161,12 +175,11 @@ def recommand_user(request, username):
             user=f.follow).exclude(user=user)[:5]
         for r in f_list:
             if r in followers_set:
-                print('zz')
                 continue
             unfollowers.append(r.follow)
     if len(unfollowers) <= 30:
         ufl = 30 - len(unfollowers)
-        fl = UserModel.objects.all().exclude(username=user.username)[:ufl]
+        fl = UserModel.objects.all().exclude(nickname=user.nickname)[:ufl]
         unfollowers += fl
     unfollowers = set(unfollowers) - set(followers_set)
     context = {'unfollowers': unfollowers}

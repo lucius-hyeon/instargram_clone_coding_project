@@ -4,7 +4,7 @@
       <img class="img_circle" width="50px" height="50px" src="{{user.profile_image.url}}">
     </div>
     <div class="my_id" onclick="location.href=''">
-      <p style="line-height: 0.5; font-weight: 500">{{user.username}}</p>
+      <p style="line-height: 0.5; font-weight: 500">{{user.nickname}}</p>
       <p style="line-height: 0.3; color: #909090;">{{user.bio}}</p>
     </div>
     <div class="my_trans_button">
@@ -17,20 +17,25 @@
       <p style="color: #909090; margin-bottom: 0px">
         자주 소통하는 사람</p>
       <!-- <p class = 'text-primary'style="font-size: 12px; margin-bottom: 0px">추천받기</p> -->
-      <a href="{% url 'recommand_user' user.username %}">추천받기</a>
+      <a href="{% url 'recommand_user' user.nickname %}">추천받기</a>
     </div>
     <div class="other_accounts_body">
       {% for f in followers%}
         <div class="other_account">
           <div class="other_profile">
             <!-- f.nickname으로 모델 삭제 생성 후 바꿔줘야함 -->
-            <a href="{% url 'profile' f.username %}">
+            <a href="{% url 'profile' f.nickname %}">
               <img class="img_circle" width="32px" height="32px" src="{{f.profile_image.url}}">
             </a>
           </div>
           <div class="other_id" onclick="location.href=``">
-            <p style="line-height: 0.1; font-weight: 500">{{f.username}}</p>
-            <p style="line-height: 0.1; color: #909090; font-size: 12px">{{f.bio}}</p>
+            <p style="line-height: 0.1; font-weight: 500">{{f.nickname}}
+            <p style="line-height: 0.1; color: #909090; font-size: 12px">
+              <b>
+                {{f.username}} -
+              </b>
+              <span style="line-height: 0.1; color: #909090; font-size: 12px">{{f.bio}}</span>
+            </p>
           </div>
           <div class="other_follow_button">
             <!-- 현재는 스위치 팔로워 -->

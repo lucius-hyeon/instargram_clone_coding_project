@@ -1,5 +1,4 @@
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-
 <style>
   .modal {
       width: 100%;
@@ -162,15 +161,6 @@
     document.body.style.overflowY = "hidden"; // 스크롤 없애기
   });
 
-  // 모달 닫기 코드
-  {% comment %} const buttonCloseModal = document.getElementById("close_modal");
-  buttonCloseModal.addEventListener("click", e => {
-    modal.style.display = "none";
-    document.body.style.overflowY = "visible";
-  });
-  $('#close_modal').click(fucntion(){
-    $('#modal').css({display : 'none'})
-  }); {% endcomment %}
 
   $('#close_modal').click( () => {
     $('#modal_add_feed').css({display : 'none'})
@@ -273,7 +263,7 @@
 
   function writeFeed(fd) {
     $.ajax({
-      url: "post/",
+      url: "/post/",
       data: fd,
       method: "POST",
       processData: false,
