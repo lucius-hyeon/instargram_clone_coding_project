@@ -103,13 +103,13 @@
 }
 
 .profile_box {
-  width: 293px;
+  width: 295px;
   height: 500px;
-  background-color: white;
+  background-color: none;
 
   top: 100px;
   position: fixed;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .my_account {
@@ -130,10 +130,10 @@
 }
 
 .my_id {
-  width: 170px;
+  width: 150px;
   height: 100%;
   font-size: 15px;
-  padding-top: 12px;
+  padding-top: 8px;
   cursor: pointer;
 }
 
@@ -330,7 +330,7 @@
 
   border: 3px solid gray;
   border-radius: 50%;
- 
+
   background-origin: border-box;
   background-clip: content-box, border-box;
 }
@@ -526,12 +526,13 @@
 .post_comment_input_btn {
   background-color: rgba(0, 0, 0, 0);
   border: none;
-
+  width: 50px;
   font-size: 14px;
   font-weight: 600;
   color: dodgerblue;
 
   opacity: 0.5;
+  justify-content: center;
 }
 
 @media (max-width: 935px) {

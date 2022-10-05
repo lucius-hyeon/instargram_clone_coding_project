@@ -67,6 +67,10 @@
       .timeline-container {
         margin-top: 25px;
       }
+
+      .post_header_more {
+        margin-left: -17px;
+      }
     </style>
   </head>
 
@@ -90,7 +94,21 @@
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_add.png" id="add_feed"></a>
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_find.png"></a>
           <a href="#"><img width="20px" height="20px" src="/static/images/icon_heart_empty.png"></a>
-          <a href="{% url 'profile' user.nickname %}"><img class="img_circle" width="24px" height="24px" src="{{user.profile_image.url}}"></a>
+          <div class="post_header_more">
+            <div class="post_header_more_btn_box">
+              <div class="btn-group">
+                <img type='button' class="img_circle dropdown-toggle" width="24px" height="24px" src="{{user.profile_image.url}}" data-bs-toggle="dropdown" aria-expanded="false">
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'profile' user.nickname %}">프로필</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'logout'%}">로그아웃</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -87,13 +87,14 @@
 
   .modal_content_write {
     display: flex;
+    padding: 10px;
     flex-direction: column;
     border-left: 1px solid rgba(0, 0, 0, 0.18);
   }
 
   .feed_content_textarea {
     resize: none;
-    width: 294px;
+    width: 100%;
     border: none;
   }
 
@@ -108,6 +109,61 @@
     top: 1em;
     right: 1em;
   }
+
+  .post_comment_input_box {
+    width: 100%;
+    height: 53px;
+
+    padding: 6px 16px;
+
+    border-top: 1px solid #f0f0f0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: normal;
+    justify-content: left;
+  }
+
+  .post_comment_imoge_box {
+    width: 40px;
+    height: 40px;
+
+    padding-top: 8px;
+  }
+
+  .post_comment_input {
+    flex-grow: 1;
+    border-width: 0;
+    outline: none;
+  }
+
+  .post_comment_input_btn {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    width: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: dodgerblue;
+
+    opacity: 0.5;
+    justify-content: center;
+  }
+
+  .feed_name {
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+  }
+
+  .comment_box {
+    width: 400px;
+    height: 360px;
+    overflow-y: auto;
+    margin-top: 10px;
+  }
+
+  .img_circle {
+    border-radius: 50%;
+  }
 </style>
 
 <div id="modal_edit_detail_feed_content" class="modal modal_overlay_content_2">
@@ -119,29 +175,33 @@
         게시물
       </div>
       <div class="modal_title_side">
-        <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px">
+        <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px; cursor: pointer;">
           close
         </span>
       </div>
     </div>
 
     <div class="modal_image_content">
-      <div id="input_image" class="modal_image_upload_content" style='overflow : hidden;'>
-        <img src="{{post.imagemodel_set.all.0.image.url}}" alt="">
+      <div id="input_image" class="modal_image_upload_content" style='overflow : hidden; background-image: url("{{post.imagemodel_set.all.0.image.url}}");'>
+        <div class="modal_image_upload">
+          <span style="text-align: center">
+            사진을 여기에 끌어다 놓으세요.
+          </span>
+        </div>
       </div>
       <div class="modal_content_write">
         <div class="feed_name">
-          <img class="img_circle" width="30px" height="30px" src="{{user.profile_image.url}}">
+          <img class="img_circle" width="30px" height="30px" src="{{post.author.profile_image.url}}">
           {{post.author.nickname}}
         </div>
         좋아요
         {{like_cnt}}개
-        <div style="height: 440px">
+        <div class='comment_box'>
           <textarea id="input_content" class="feed_content_textarea form-control col-sm-5" rows="10">{{post.content}}</textarea>
         </div>
         <div style="width: 100%; text-align: center">
           <button id="button_write_feed" type="button" class="btn btn-primary" style="width: 268px">
-            수정저장
+            수정
           </button>
         </div>
       </div>
@@ -158,52 +218,57 @@
         게시물
       </div>
       <div class="modal_title_side">
-        <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px">
-          <a href='/'>close</a>
+        <span id="close_modal" class="close_modal material-icons-outlined" style="font-size: 30px; cursor: pointer;">
+          close
         </span>
       </div>
     </div>
 
     <div class="modal_image_content">
-      <div id="input_image" class="modal_image_upload_content" style='overflow : hidden;'>
-        <img src="{{post.imagemodel_set.all.0.image.url}}" alt="">
-      </div>
+      <div id="input_image" class="modal_image_upload_content" style='overflow : hidden; background-image: url("{{post.imagemodel_set.all.0.image.url}}");'></div>
       <div class="modal_content_write">
         <div class="feed_name">
-          <img class="img_circle" width="30px" height="30px" src="{{user.profile_image.url}}">
+          <img class="img_circle" width="40px" height="40px" src="{{post.author.profile_image.url}}">
           {{post.author.nickname}}
         </div>
-        좋아요
-        {{like_cnt}}개
-        <div style="height: 395px">
-          {{post.content}}
-          <div class='row'>
+
+        <div class='comment_box'>
+          <span style='margin-left: 10px;'>{{post.content}}</span>
+          <div class='row' style="width:95%; margin-top:10px;">
             {% for comment in comments %}
               <div class='col-9'>
-                <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
-                <span>{{comment.content}}</span>
+                <img class='img_circle' src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
+                <span>{{comment.content}}</span><br>
                 <span>{{comment.created_at}}</span>
               </div>
             {% endfor %}
           </dvi>
         </div>
       </div>
+      좋아요
+      {{like_cnt}}개
       <div>
         <form action='../../comment/{{post.id}}/' method='post'>
-          {%csrf_token%}
-          <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-          <button class="post_comment_input_btn" name="{{post.id}}" style="opacity: 0.5;">
-            게시
-          </button>
-        </form>
-        {% if user == post.author %}
-          <div style="width: 100%; text-align: center;">
-            <button id="button_edit_feed" type="button" class="btn btn-primary" style="width: 268px">
-              수정하기
+          <div class="post_comment_input_box">
+            <div class="post_comment_imoge_box">
+              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+            </div>
+            {%csrf_token%}
+            <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+            <button class="post_comment_input_btn" name="{{post.id}}" style="opacity: 0.5;">
+              게시
             </button>
           </div>
-        </div>
-      {% endif %}
+          {% if user == post.author %}
+            <div style="width: 100%; text-align: center;">
+              <button id="button_edit_feed" type="button" class="btn btn-primary" style="width: 268px">
+                수정하기
+              </button>
+            </div>
+          {% endif %}
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
@@ -219,13 +284,6 @@
     $('#modal_detail_feed_content').css({display: 'none'})
     $('#modal_edit_detail_feed_content').css({display: 'none'})
     $(location).attr("href", '/')
-
-    //if(request.path == '/'){
-    //  $(location).attr("href", '/')
-    //}else{
-    //  $(location).attr("href", '../../{{user.nickname}}')
-    //};
-
   });
 
   $('#close_2_modal').click(() => {
@@ -247,6 +305,7 @@
   function closeModal() {
     $('.modal').css({display: 'none'});
     $(document.body).css({overflowY: 'visible'});
+    $(location).attr("href", '/')
   };
 
   $('.modal_image_upload')
@@ -282,8 +341,8 @@
     }
 
     if (files[0].type.match(/image.*/)) {
-      $('#modal_detail_feed_content').css({display: 'flex'});
-      $('.modal_image_upload_content').css({
+      $('#modal_edit_detail_feed_content').css({display: 'flex'});
+      $('.modal_image_upload').css({
         "background-image": "url(" + window
           .URL
           .createObjectURL(files[0]) + ")",
@@ -292,7 +351,7 @@
         "background-repeat": "no-repeat",
         "background-position": "center"
       });
-      $('#modal_add_feed').css({display: 'none'})
+      // $('#modal_add_feed').css({display: 'none'})
     } else {
       alert('이미지가 아닙니다.');
       return;
@@ -309,7 +368,7 @@
 
     let fd = new FormData();
 
-    // fd.append('file', file[0]);
+    fd.append('file', file[0]);
     fd.append('image', image);
     fd.append('content', content);
     console.log(fd.get('content'));
@@ -345,5 +404,27 @@
         location.reload();
       }
     })
+  };
+  const textareaLimitWordAndRow = (text, limitWordPerline, limeLines) => {
+    let lines = text.split('\n');
+    const charlimit = limitWordPerline; // 글자수 제한
+
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].length <= charlimit) 
+        continue;
+      let j = 0;
+      let space = charlimit;
+      while (j++ <= charlimit) {
+        if (lines[i].charAt(j) === ' ') 
+          space = j;
+        }
+      
+      lines[i + 1] = lines[i].substring(space + 1) + (lines[i + 1] || '');
+      lines[i] = lines[i].substring(0, space);
+    }
+
+    return lines
+      .slice(0, limeLines)
+      .join('\n');
   };
 </script>
