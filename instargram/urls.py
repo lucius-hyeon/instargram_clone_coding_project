@@ -19,6 +19,7 @@ from user.views import switch_follow, kakao_social_login,kakao_social_login_call
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 # from django.conf import settings
 # from django.conf.urls.static import static
 

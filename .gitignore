@@ -178,7 +178,5 @@ cython_debug/
 # user
 *.fig
 *.drawio
-migrations/
-venv/
 
-uploads
+uploads/media
