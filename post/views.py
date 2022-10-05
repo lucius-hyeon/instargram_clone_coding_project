@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from instargram.settings import MEDIA_ROOT
 from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
+from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 
@@ -86,6 +87,7 @@ def make_post(user, post_list):
     return post_dict_list
 
 
+
 @login_required(login_url='login')
 def index(request):
     user = request.user
@@ -93,24 +95,23 @@ def index(request):
 
         user = request.user
         post_list = PostModel.objects.all().order_by('-id')
-        followers = [f.follow for f in FollowModel.objects.filter(user=user)[
-            :6]]
+        followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
         all_story_author = get_storys_author(request)
         post_list = make_post(user, post_list)
+        user_story = Story.objects.filter(author = user, is_end = False)
 
         context = {
             'followers': followers,
             'post_list': post_list,
             'authors': all_story_author[0],
             'viewed_authors': all_story_author[1],
+            'user_story' : user_story,
         }
     return render(request, 'index.html', context)
 
 
 def profile(request, nickname):
     user = request.user
-    print(dir(user))
-    print(user.follow)
     author = UserModel.objects.get(nickname=nickname)
     author_post = PostModel.objects.filter(author=author)
     author_bookmark_post = [
@@ -123,10 +124,6 @@ def profile(request, nickname):
     is_author = False
     if nickname == user.nickname:
         is_author = True
-    # for post in author_post:
-    #     post_dict = {"thumbnail": '', 'post': ''}
-    # print(dir(author_post[0]), '이거야')
-    # print(author_post[0].post_like.all().count())
 
     context = {
         'author': author,
