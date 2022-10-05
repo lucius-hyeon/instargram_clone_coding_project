@@ -297,69 +297,69 @@
           "X-CSRFToken": '{{csrf_token}}'
         }
       });
-
+    
       $('#close_modal').click(() => {
-        $('#modal_detail_feed_content').css({ display: 'none' })
-        $('#modal_edit_detail_feed_content').css({ display: 'none' })
+        $('#modal_detail_feed_content').css({display: 'none'})
+        $('#modal_edit_detail_feed_content').css({display: 'none'})
         $(location).attr("href", '/')
       });
-
+    
       $('#close_2_modal').click(() => {
-        $('#modal_detail_feed_content').css({ display: 'none' })
-        $('#modal_edit_detail_feed_content').css({ display: 'none' })
+        $('#modal_detail_feed_content').css({display: 'none'})
+        $('#modal_edit_detail_feed_content').css({display: 'none'})
         $(location).attr("href", '/')
       });
-
+    
       $('#button_edit_feed').click(() => {
-        $('#modal_detail_feed_content').css({ display: 'none' })
-        $('#modal_overlay_content_2').css({ display: 'flex' })
-        $('#modal_edit_detail_feed_content').css({ display: 'flex' })
+        $('#modal_detail_feed_content').css({display: 'none'})
+        $('#modal_overlay_content_2').css({display: 'flex'})
+        $('#modal_edit_detail_feed_content').css({display: 'flex'})
       });
-
+    
       $('.close_modal').on("click", () => {
         closeModal();
       });
-
+    
       function closeModal() {
-        $('.modal').css({ display: 'none' });
-        $(document.body).css({ overflowY: 'visible' });
+        $('.modal').css({display: 'none'});
+        $(document.body).css({overflowY: 'visible'});
         $(location).attr("href", '/')
       };
-
+    
       $('.modal_image_upload')
         .on("dragover", dragOver)
         .on("dragleave", dragOver)
         .on("drop", uploadFiles);
-
+    
       function dragOver(e) {
         console.log(e);
         e.stopPropagation();
         e.preventDefault();
-
+    
         if (e.type == "dragover") {
-          $(e.target).css({ "background-color": "#F8E0E6", "outline-offset": "-20px" });
+          $(e.target).css({"background-color": "#F8E0E6", "outline-offset": "-20px"});
         } else {
-          $(e.target).css({ "background-color": "white", "outline-offset": "-10px" });
+          $(e.target).css({"background-color": "white", "outline-offset": "-10px"});
         }
       }
-
+    
       let files;
-
+    
       function uploadFiles(e) {
         console.log(e);
         e.stopPropagation();
         e.preventDefault();
-
+    
         e.dataTransfer = e.originalEvent.dataTransfer;
         files = e.dataTransfer.files;
-
+    
         if (files.length > 1) {
           alert('하나만 올려라.');
           return;
         }
-
+    
         if (files[0].type.match(/image.*/)) {
-          $('#modal_edit_detail_feed_content').css({ display: 'flex' });
+          $('#modal_edit_detail_feed_content').css({display: 'flex'});
           $('.modal_image_upload').css({
             "background-image": "url(" + window
               .URL
@@ -375,7 +375,7 @@
           return;
         }
       };
-
+    
       $('#button_write_feed').on('click', () => {
         const image = $('#input_image')
           .css("background-image")
@@ -383,10 +383,12 @@
         const content = $('#input_content').val();
         console.log(content);
         const file = files;
-
+    
         let fd = new FormData();
-
-        fd.append('file', file[0]);
+    
+        if (file != undefined) {
+          fd.append('file', file[0]);
+        };
         fd.append('image', image);
         fd.append('content', content);
         console.log(fd.get('content'));
@@ -395,19 +397,19 @@
         } else if (content.length <= 0) {
           alert("설명을 입력하세요");
         } else {
-          writeFeed(fd);
+          editFeed(fd);
           //console.log(files[0]);
         }
       });
-
-      function writeFeed(fd) {
+    
+      function editFeed(fd) {
         $.ajax({
           url: "../../post/update/{{post.id}}/",
           data: fd,
           method: "POST",
           processData: false,
           contentType: false,
-
+    
           success: function (data) {
             console.log("성공");
           },
@@ -426,21 +428,21 @@
       const textareaLimitWordAndRow = (text, limitWordPerline, limeLines) => {
         let lines = text.split('\n');
         const charlimit = limitWordPerline; // 글자수 제한
-
+    
         for (let i = 0; i < lines.length; i++) {
-          if (lines[i].length <= charlimit)
+          if (lines[i].length <= charlimit) 
             continue;
           let j = 0;
           let space = charlimit;
           while (j++ <= charlimit) {
-            if (lines[i].charAt(j) === ' ')
+            if (lines[i].charAt(j) === ' ') 
               space = j;
-          }
-
+            }
+          
           lines[i + 1] = lines[i].substring(space + 1) + (lines[i + 1] || '');
           lines[i] = lines[i].substring(0, space);
         }
-
+    
         return lines
           .slice(0, limeLines)
           .join('\n');
