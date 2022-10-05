@@ -98,10 +98,8 @@ def login(request):
 
             auth.login(request, user)  # 로그인 처리
             return redirect('/')
-            # return render(request, 'index.html')
 
         else:
-            print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
 
 
