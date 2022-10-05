@@ -1,5 +1,3 @@
-from msilib.schema import ListView
-from tkinter import PhotoImage
 from django.shortcuts import render, redirect
 # from django.contrib import messages
 from .models import UserModel, FollowModel
