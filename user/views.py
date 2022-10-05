@@ -13,9 +13,10 @@ import requests
 import random
 import string
 
-##비밀번호 변경
+# 비밀번호 변경
 from django.contrib.auth.hashers import check_password
 from django.contrib import messages, auth
+
 
 @login_required(login_url='login')
 def switch_follow(request, user_id):
@@ -61,11 +62,11 @@ def join(request):
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 이메일 계정입니다.'})
 
-        #nickname 중복체크 추가
+        # nickname 중복체크 추가
         exist_user = get_user_model().objects.filter(nickname=nickname)
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 사용자 이름 입니다.'})
-        
+
         else:
             UserModel.objects.create_user(
                 username=username,
@@ -76,6 +77,7 @@ def join(request):
             return render(request, 'user/login.html')
 
 ### 로그인 ###
+
 
 def login(request):
     if request.method == 'GET':
@@ -134,10 +136,12 @@ def get_random_nickname():
     while True:
         for _ in range(10):
             rand_str += str(random.choice(string.ascii_letters + string.digits))
-        if UserModel.objects.filter(nickname = rand_str).exists():
+        if UserModel.objects.filter(nickname=rand_str).exists():
             pass
         else:
             return rand_str
+
+
 def get_random_password():
     rand_str = ''
     while True:
@@ -154,57 +158,59 @@ def kakao_social_login(request):
             f'https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code'
         )
 
+
 def kakao_social_login_callback(request):
-    try :
+    try:
         code = request.GET.get('code')
         client_id = 'b69e5d10ed989fce828f23f98a5265d9'
         redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback'
         token_request = requests.post(
-            'https://kauth.kakao.com/oauth/token', {'grant_type':'authorization_code','client_id':client_id, 'redierect_uri': redirect_uri, 'code':code}
+            'https://kauth.kakao.com/oauth/token', {'grant_type': 'authorization_code',
+                                                    'client_id': client_id, 'redierect_uri': redirect_uri, 'code': code}
         )
         # token_request = requests.get(
-            # f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}'
+        # f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}'
         # )
         token_json = token_request.json()
 
         error = token_json.get('error', None)
 
-        if error is not None :
+        if error is not None:
             print(error)
-            return JsonResponse({"message": "INVALID_CODE"}, status = 400)
+            return JsonResponse({"message": "INVALID_CODE"}, status=400)
 
         access_token = token_json.get("access_token")
 
     except KeyError:
-        return JsonResponse({"message" : "INVALID_TOKEN"}, status = 400)
+        return JsonResponse({"message": "INVALID_TOKEN"}, status=400)
 
     except access_token.DoesNotExist:
-        return JsonResponse({"message" : "INVALID_TOKEN"}, status = 400)
-    
+        return JsonResponse({"message": "INVALID_TOKEN"}, status=400)
+
         #------get kakaotalk profile info------#
 
     profile_request = requests.get(
-        "https://kapi.kakao.com/v2/user/me", headers={"Authorization" : f"Bearer {access_token}"},
+        "https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {access_token}"},
     )
     profile_json = profile_request.json()
     kakao_id = profile_json.get('id')
     username = profile_json['properties']['nickname']
-   
-    if UserModel.objects.filter(kakao_id = kakao_id).exists():
-        user = UserModel.objects.get(kakao_id = kakao_id)
+
+    if UserModel.objects.filter(kakao_id=kakao_id).exists():
+        user = UserModel.objects.get(kakao_id=kakao_id)
         auth.login(request, user)  # 로그인 처리
     else:
         UserModel.objects.create(
-          username = username,
-          nickname = get_random_nickname(), # usermodel에 없을 때 까지 생성 후 리턴
-          password = get_random_password(),
-          kakao_id = kakao_id,
+            username=username,
+            nickname=get_random_nickname(),  # usermodel에 없을 때 까지 생성 후 리턴
+            password=get_random_password(),
+            kakao_id=kakao_id,
         )
-        user = UserModel.objects.get(kakao_id = kakao_id)
+        user = UserModel.objects.get(kakao_id=kakao_id)
         auth.login(request, user)
     return redirect('/')
 
-    
+
 def get_profile(request, nickname):
     print(request)
     print(dir(request.user))
@@ -216,50 +222,54 @@ def get_profile(request, nickname):
 
 @login_required
 def update(request):
-    #닉네임 중복처리필요
     if request.method == 'GET':
         return render(request, 'user/update.html')
-
     elif request.method == 'POST':
         user = request.user
-
         bio = request.POST.get('bio')
         email = request.POST.get('email')
         username = request.POST.get('username')
         nickname = request.POST.get('nickname')
-
         exist_nickname = get_user_model().objects.filter(nickname=nickname)
-        
-        if exist_nickname:
-            return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
-        else:   
+        if exist_nickname and user.nickname == nickname:
             user.nickname = nickname
             user.bio = bio
             user.email = email
             user.username = username
             user.save()
+            return redirect('/', user.username)
+        elif exist_nickname and user.nickname != nickname:
+            return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
+        else:
+            user.nickname = nickname
+            user.bio = bio
+            user.email = email
+            user.username = username
+            user.save()
+            return redirect('/', user.username)
 
-        return redirect('/', user.username)
-    
 ###비밀번호 변경###
+
 
 @login_required
 def change_password(request):
-  if request.method == "POST":
-    user = request.user
-    origin_password = request.POST["origin_password"]
-    if check_password(origin_password, user.password):
-      new_password = request.POST["new_password"]
-      confirm_password = request.POST["confirm_password"]
-      if new_password == confirm_password:
-        user.set_password(new_password)
-        user.save()
-        auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return redirect('/')
-      else:
-        messages.error(request, 'Password not same')
+    if request.method == "POST":
+        user = request.user
+        origin_password = request.POST["origin_password"]
+        if check_password(origin_password, user.password):
+            new_password = request.POST["new_password"]
+            confirm_password = request.POST["confirm_password"]
+            if origin_password == confirm_password or new_password == origin_password:
+                return render(request, 'user/change_password.html', {'error': '사용하고 있는 비밀번호를 입력하셨습니다.'})
+            elif new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                auth.login(request, user,
+                           backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('/')
+            else:
+                return render(request, 'user/change_password.html', {'error': '신규 비밀번호와 신규 비밀번호 확인을 똑같이 입력해주세요.'})
+        else:
+            return render(request, 'user/change_password.html', {'error': '현재 비밀번호가 틀렸습니다.'})
     else:
-      messages.error(request, 'Password not correct')
-    return render(request, 'user/change_password.html')
-  else:
-    return render(request, 'user/change_password.html')
+        return render(request, 'user/change_password.html')
