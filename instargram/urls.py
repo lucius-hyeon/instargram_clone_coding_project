@@ -26,7 +26,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('post.urls')),
     path('user/', include('user.urls')),
     path('story/', include('story.urls')),
 
@@ -37,10 +36,7 @@ urlpatterns = [
     path('account/login/kakao/', kakao_social_login, name = 'kakao_login'),
     path('account/login/kakao/callback/', kakao_social_login_callback, name = 'kakao_login_callback'),
 
-    ###개인정보 수정, 비밀번호 변경
-
-
-    
+    path('', include('post.urls')),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

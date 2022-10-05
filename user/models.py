@@ -22,3 +22,4 @@ class FollowModel(models.Model):
         UserModel, on_delete=models.CASCADE, related_name='user')
     follow = models.ForeignKey(
         UserModel, on_delete=models.CASCADE, related_name='follow')
+
