@@ -82,11 +82,25 @@
       <img class="profile" src="{{user.profile_image.url}}">
 
     </div>
-  </div>
-  <div style="text-align: left">
-    <div style="display: flex; flex-direction: row; margin: 20px 0">
-      <div style="font-size: 26px; margin-right: 40px">
-        {{ author.nickname }}
+
+    <div style="text-align: left">
+
+        <div style="display: flex; flex-direction: row; margin: 20px 0">
+            <div style="font-size: 26px; margin-right: 40px">
+                {{ author.nickname }}
+            </div>
+                {% if is_author%}
+                    <button type="button" onclick = "location.href = '/user/update/'" id="button_profile_upload" style="margin-right: 40px"> 프로필 편집 </button>
+                {% endif %}
+            <div>
+            </div>
+
+        </div>
+        {% if is_author%}
+          <button id="button_profile_upload" style="margin-right: 40px">
+            프로필 편집</button>
+        {% endif %}
+
       </div>
       {% if is_author%}
       <button id="button_profile_upload" style="margin-right: 40px">
