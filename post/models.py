@@ -57,3 +57,14 @@ class LikeModel(models.Model):
     user = models.ForeignKey(UserModel, on_delete = models.CASCADE, related_name='user_like')
     post = models.ForeignKey(PostModel, on_delete=models.CASCADE,related_name='post_like')
     is_like = models.BooleanField(default=False)
+
+
+class ReplyCommentModel(models.Model):
+    class Meta:
+        db_table = 'replycomment'
+
+    content = models.CharField(max_length=256, null=False)
+    post = models.ForeignKey(PostModel, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    comment = models.ForeignKey(CommentModel, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)

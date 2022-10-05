@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from instargram.settings import MEDIA_ROOT
-from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
+from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel, ReplyCommentModel
 from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
@@ -99,6 +99,11 @@ def index(request):
         all_story_author = get_storys_author(request)
         post_list = make_post(user, post_list)
         user_story = Story.objects.filter(author = user, is_end = False)
+      
+    
+        
+        reply_comment = ReplyCommentModel.objects.all()
+        
 
         context = {
             'followers': followers,
@@ -106,6 +111,7 @@ def index(request):
             'authors': all_story_author[0],
             'viewed_authors': all_story_author[1],
             'user_story' : user_story,
+            'recomments' : reply_comment
         }
     return render(request, 'index.html', context)
 
@@ -269,3 +275,25 @@ def comment_delete(request, comment_id):
     if user == comment.author or user == comment.post.author:
         comment.delete()
     return redirect('/')
+
+
+@login_required
+def replycomment(request, post_id, comment_id):
+    if request.method == "POST":
+        user = request.user
+        post = PostModel.objects.get(id = post_id)
+        comment = CommentModel.objects.get(id = comment_id)
+        content = request.POST.get('relpy')
+
+        ReplyCommentModel.objects.create(
+            content = content,
+            author = user,
+            comment = comment,
+            post = post
+        )
+    return redirect('/')
+
+
+
+
+   

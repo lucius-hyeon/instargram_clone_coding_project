@@ -126,6 +126,7 @@
                 <div class="post_text_more" name="{{post.post.id}}">
                   <div class='row'>
                     {% for comment in post.comments %}
+                      
                       <div class='col-1 mb-1'>
                         <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
                       </div>
@@ -135,11 +136,26 @@
                         </span>
                         <span>{{comment.content}}</span>
                         <span>{{comment.created_at}}</span>
+                        {% for recomment in recomments %}
+                          {% if comment.id == recomment.comment.id%}
+                            <div>{{ recomment.content }}</div>
+                            <a href="{% url 'comment_delete' recomment.comment_id %}">삭제</a>
+                          {% endif %}
+                        {% endfor %} 
+                        
 
                         {% if user == comment.author or user == post.post.author %}
-                          <a href="{% url 'comment_delete' comment.id%}">삭제</a>
-                        {% endif %}
+                            <a href="{% url 'comment_delete' comment.id%}">삭제</a>
+                          {%else%}
+                            <form action="/replycomment/{{post.post.id}}/{{comment.id}}/" method="post">
+                              {%csrf_token%}
+                              <input type="text" name="relpy">
+                              <input type="submit">
+                            </form>
+                          {% endif %}
+
                       </div>
+                       
                     {% endfor %}
                   </dvi>
                 </div>
@@ -151,13 +167,13 @@
                 <div class="post_comment_imoge_box">
                   <img width="24px" height="24px" src="/static/images/icon_imoge.png">
                 </div>
-                <form action='comment/{{post.post.id}}/' method='post'>
                   {%csrf_token%}
-                  <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-                  <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
-                    게시
-                  </button>
-                </form>
+                  <form action='comment/{{post.post.id}}/' method='post'></form>
+                    <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                    <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
+                      게시
+                    </button>
+                  </form>
               </div>
             </div>
           </div>
