@@ -273,6 +273,9 @@
   </script>
   {% block extra-script %}
   <script>
+
+    // 경민 - 팔로워 팔로잉이 같은 이름을 가지고 있으면 display none 처리를 했더라도 위에있는(팔로워)의 값을 참조한다
+    // 
       function switchFollow(userId, nickname){
         $.ajax({
                 type: 'GET',
