@@ -107,7 +107,7 @@ def login(request):
                 # 'followers': followers,
 
             }
-            return render(request, 'index.html')
+            return redirect('/')
         else:
             print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})

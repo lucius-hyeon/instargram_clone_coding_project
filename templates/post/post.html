@@ -1,3 +1,5 @@
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <style>
   .modal {
       width: 100%;
@@ -81,7 +83,11 @@
     top: 1em;
     right: 1em;
   }
-
+  .modal_overlay_content > button {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+  }
 </style>
 
 
@@ -109,7 +115,7 @@
 </div>
 
 <div id="modal_add_feed_content" class="modal modal_overlay_content">
-  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_modal">X</button>
+  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="close_2_modal">X</button>
   <div class="modal_window">
     <div class="modal_title">
       <div class="modal_title_side"></div>
@@ -157,11 +163,27 @@
   });
 
   // 모달 닫기 코드
-  const buttonCloseModal = document.getElementById("close_modal");
+  {% comment %} const buttonCloseModal = document.getElementById("close_modal");
   buttonCloseModal.addEventListener("click", e => {
     modal.style.display = "none";
     document.body.style.overflowY = "visible";
   });
+  $('#close_modal').click(fucntion(){
+    $('#modal').css({display : 'none'})
+  }); {% endcomment %}
+
+  $('#close_modal').click( () => {
+    $('#modal_add_feed').css({display : 'none'})
+    $('#modal_add_feed_content').css({display : 'none'})
+    $(document.body).css({overflowY: 'visible'});
+  });
+
+  $('#close_2_modal').click( () => {
+    $('#modal_add_feed').css({display : 'none'})
+    $('#modal_add_feed_content').css({display : 'none'})
+    $(document.body).css({overflowY: 'visible'});
+  });
+  
 
   $('.close_modal').on("click", () => {
     closeModal();
