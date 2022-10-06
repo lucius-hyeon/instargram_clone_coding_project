@@ -21,30 +21,23 @@
     
 
 ## Wireframe
-
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled.png)
-
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%201.png)
-
-
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%202.png%0D) 
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%203.png%0D) 
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%204.png%0D) 
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%205.png%0D) 
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%206.png%0D) 
-
-
-
-
-
+![Untitled](https://user-images.githubusercontent.com/113074274/194221236-aebee738-31da-4d3e-a7c6-0671e87cd0cb.png)
+![Untitled 1](https://user-images.githubusercontent.com/113074274/194221275-7de0b1ee-693c-4e01-b19a-d2ea0739140a.png)
+![Untitled 2](https://user-images.githubusercontent.com/113074274/194221279-05c17e4a-bc07-4d8b-a2a1-17a93768c410.png)
+![Untitled 3](https://user-images.githubusercontent.com/113074274/194221280-11419b16-53ae-4e18-a8b3-9c52f39ee51c.png)
+![Untitled 4](https://user-images.githubusercontent.com/113074274/194221281-bc9fd7a2-f072-47b3-9862-4fa7cae7797f.png)
+![Untitled 5](https://user-images.githubusercontent.com/113074274/194221285-2b206874-4358-4f63-9cb7-82a9ef01c5dd.png)
+![Untitled 6](https://user-images.githubusercontent.com/113074274/194221289-9e070ac6-be78-460d-8ce6-e766f29afd05.png)
+![Untitled 7](https://user-images.githubusercontent.com/113074274/194221291-e5656ef4-6ef0-4056-8442-ee03804bd66a.png)
 
 
 ## ERD
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%207.png%0D) 
+![Untitled 8](https://user-images.githubusercontent.com/113074274/194221303-5e837459-f2a0-4367-8af7-7789033b6cb7.png)
 
 
 ## 변경 ERD
-![Untitled](c:/Users/Lucius/Downloads/Export-12e9096e-9b21-4a9d-a3f1-5dd1a52101b7/instargram_clonecoding_project%2011277d938d6145a2a278d17b24289545/Untitled%208.png) 
+![%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7_2022-10-05_%EC%98%A4%ED%9B%84_9 25 18](https://user-images.githubusercontent.com/113074274/194221326-e83d7326-7ca0-4744-b75f-6a5988706245.png)
+
 
 ## API
 
@@ -91,5 +84,7 @@
 | 카카오로그인 | GET | /account/login/kakao |  |  |  |
 |  | GET | account/login/kakao/callback |  |  |  |
 
+
 ## 시연영상
 https://www.youtube.com/watch?v=8IxAmlwLtdM
+
