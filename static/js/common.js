@@ -69,7 +69,6 @@ function view_post_text_more(name) {
   $(`.post_text_more[name=${name}]`).css('display', 'block');
 }
 
-
 // 로딩시 profile 마진값 다시 계산
 $(document).ready(function () {
   update_profile_margin();

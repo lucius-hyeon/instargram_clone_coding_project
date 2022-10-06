@@ -120,10 +120,11 @@
                 <span class="post_text_btn" name="{{post.post.id}}" onclick="view_post_text_more('{{post.post.id}}')">
                   ... 더보기(댓글)
                 </span>
-                <div class="post_text_more" name="{{post.post.id}}">
+
+                <div class="post_text_more" name="{{post.post.id}}" style='margin-top: 15px; font: weight 600px;'>
                   <div class='row'>
                     {% for comment in post.comments %}
-                      
+
                       <div class='col-1 mb-1'>
                         <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
                       </div>
@@ -133,26 +134,38 @@
                         </span>
                         <span>{{comment.content}}</span>
                         <span>{{comment.created_at}}</span>
-                        {% for recomment in recomments %}
-                          {% if comment.id == recomment.comment.id%}
-                            <div>{{ recomment.content }}</div>
-                            <a href="{% url 'comment_delete' recomment.comment_id %}">삭제</a>
-                          {% endif %}
-                        {% endfor %} 
-                        
-
                         {% if user == comment.author or user == post.post.author %}
-                            <a href="{% url 'comment_delete' comment.id%}">삭제</a>
-                          {%else%}
-                            <form action="/replycomment/{{post.post.id}}/{{comment.id}}/" method="post">
-                              {%csrf_token%}
-                              <input type="text" name="relpy">
-                              <input type="submit">
-                            </form>
+                          <a href="{% url 'comment_delete' comment.id%}">삭제</a>
+                        {% endif %}
+                        {% for recomment in recomments %}
+                          {% if comment.id == recomment.comment.id %}
+                            <div style='margin-top: 20px'>
+                              <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
+                              <span>
+                                <b>{{recomment.author}}</b>
+                              </span>
+                              <span>{{ recomment.content }}</span>
+                              {% if user == recomment.author or user == comment.author %}
+                                <a href="{% url 'replycomment_delete' post_id=recomment.id comment_id=recomment.id %}">삭제</a>
+                              {% endif %}
+                            </div>
                           {% endif %}
+                        {% endfor %}
 
+                        <form action="/replycomment/{{post.post.id}}/{{comment.id}}/" method="post">
+                          <div class="post_comment_input_box">
+                            <div class="post_comment_imoge_box">
+                              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+                            </div>
+                            {%csrf_token%}
+                            <input name="relpy" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                            <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
+                              게시
+                            </button>
+                          </div>
+                        </form>
                       </div>
-                       
+
                     {% endfor %}
                   </div>
                 </div>
