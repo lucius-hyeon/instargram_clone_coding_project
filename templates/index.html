@@ -18,7 +18,7 @@
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">스토리 공유하기</h5>
         </div>
-        <form action="{% url 'create_story' %}" method="POST">
+        <form action="{% url 'create_story' %}" method="POST" enctype="multipart/form-data">
           {%csrf_token%}
         <div class="modal-body">
             <input class="form-control" type="file" name="image">

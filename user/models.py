@@ -16,6 +16,7 @@ class UserModel(AbstractUser):
     )
     kakao_id = models.CharField(max_length = 256, null=True, blank=True)
 
+
 class FollowModel(models.Model):
     user = models.ForeignKey(
         UserModel, on_delete=models.CASCADE, related_name='user')
@@ -25,4 +26,4 @@ class FollowModel(models.Model):
 
 
 # 아마 제이쿼리 버전이 달라서?
-# 
+# 놀다갑니다

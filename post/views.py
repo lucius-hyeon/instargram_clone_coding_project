@@ -121,12 +121,13 @@ def profile(request, nickname):
     author_following = [
         men.follow for men in FollowModel.objects.filter(user=author)]
     author_follower_1 = [
-        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists() is not None
+        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists()
     ]
     author_follower_0 = [
-        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists() is None
+        men.user for men in FollowModel.objects.filter(follow=author) if not FollowModel.objects.filter(user = user, follow = men.user).exists()
     ]
     follower_cnt = len(author_follower_0 + author_follower_1)
+    print(FollowModel.objects.filter(user = user, follow = user).exists())
 
     # 해당주인의 팔로워가 내가 팔로잉 한 사람인지 판단하는 방법은?
         # 생각 1. followmodel에서 user = user follow = 계정주인팔로워
