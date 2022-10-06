@@ -182,3 +182,4 @@ cython_debug/
 migrations/
 uploads/media/
 uploads/story/
+.vscode
