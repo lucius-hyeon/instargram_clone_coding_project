@@ -84,50 +84,88 @@ def join(request):
 ### 로그인 ###
 
 
+# def login(request):
+#     if request.method == 'GET':
+#         return render(request, 'user/login.html')
+
+#     elif request.method == 'POST':
+#         check_email = re.compile(
+#             '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+
+#         email = request.POST.get('email', None)
+#         password = request.POST.get('password', None)
+
+#         check_email = check_email.match(email)
+
+#         if check_email is None:
+#             return render(request, 'user/login.html', {'error': '이메일 양식이 올바르지 않습니다.'})
+
+#         # 입력란 빈칸일때
+#         if email == '':
+#             return render(request, 'user/login.html', {'error': '메일을 입력해주세요.'})
+#         elif password == '':
+#             return render(request, 'user/login.html', {'error': '패스워드를 입력해주세요.'})
+
+#         # authenticate is only allowed username.
+#         # find username
+#         # username = UserModel.objects.get(email=email).username
+
+#         username = UserModel.objects.get(email=email).username
+#         # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
+#         user = auth.authenticate(request, username=username, password=password)
+
+#         if user is not None:
+
+#             auth.login(request, user)  # 로그인 처리
+#             return redirect('/')
+
+#             user = request.user
+#             print(user.nickname, user, user.username)
+
+#             userinfo = {
+#                 # 'followers': followers,
+
+#             }
+#             return redirect("/")
+#         else:
+#             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
+
+
 def login(request):
     if request.method == 'GET':
         return render(request, 'user/login.html')
-
     elif request.method == 'POST':
         check_email = re.compile(
             '^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-
         email = request.POST.get('email', None)
         password = request.POST.get('password', None)
-
         check_email = check_email.match(email)
-
         if check_email is None:
             return render(request, 'user/login.html', {'error': '이메일 양식이 올바르지 않습니다.'})
-
         # 입력란 빈칸일때
         if email == '':
             return render(request, 'user/login.html', {'error': '메일을 입력해주세요.'})
         elif password == '':
             return render(request, 'user/login.html', {'error': '패스워드를 입력해주세요.'})
-
         # authenticate is only allowed username.
         # find username
-        # username = UserModel.objects.get(email=email).username
-
-        username = UserModel.objects.get(email=email).username
+        exist_email = get_user_model().objects.filter(email=email)
+        if exist_email:
+            pass
+        else:
+            return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
+        username = UserModel.objects.get(email=email.lower()).username
+        print(username)
+        print(username)
         # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
         user = auth.authenticate(request, username=username, password=password)
-
         if user is not None:
-
             auth.login(request, user)  # 로그인 처리
-            return redirect('/')
-
             user = request.user
             print(user.nickname, user, user.username)
-
-            userinfo = {
-                # 'followers': followers,
-
-            }
             return redirect("/")
         else:
+            print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
 
 
