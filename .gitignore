@@ -179,4 +179,7 @@ cython_debug/
 *.fig
 *.drawio
 
-uploads/media
+migrations/
+uploads/media/
+uploads/story/
+.vscode

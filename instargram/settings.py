@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     # 'django.contrib.sites.models.Site',
-    
+
     'user',
     'post',
     'story',
@@ -156,3 +156,29 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')  # 로컬 디렉토리 어디에 
 
 
 SITE_ID = 1
+
+
+# # 이메일 인증
+# # 메일을 보내는 호스트 서버
+# EMAIL_HOST = 'smtp.gmail.com'
+
+# # ENAIL_HOST에 정의된 SMTP 서버가 사용하는 포트 (587: TLS/STARTTLS용 포트)
+# EMAIL_PORT = '587'
+
+# #  발신할 이메일 주소 '~@gmail.com'
+# EMAIL_HOST_USER = ('splendent77@gmail.com')
+
+# # 발신할 이메일 비밀번호 (2단계 인증일경우 앱 비밀번호)
+# EMAIL_HOST_PASSWORD = ('dwfqsgmfsrmsjxqp')
+
+# # TLS 보안 방법 (SMPT 서버와 통신할 떄 TLS (secure) connection 을 사용할지 말지 여부)
+# EMAIL_USE_TLS = True
+
+# # 사이트와 관련한 자동응답을 받을 이메일 주소
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'splendent77@gmail.com'
+EMAIL_HOST_PASSWORD = 'vgtrzudyzufmacwq'
+EMAIL_USE_TLS = True

@@ -22,25 +22,25 @@ def create_story(request):
 
 @login_required(login_url='login')
 def view_story(request, nickname):
-    author = UserModel.objects.get(nickname = nickname)
+    author = UserModel.objects.get(nickname=nickname)
     user = request.user
-    storys = Story.objects.filter(author = author, is_end = False)
+    storys = Story.objects.filter(author=author, is_end=False)
     for story in storys:
         try:
-            StoryViewed.objects.get(story = story, user = user)
+            StoryViewed.objects.get(story=story, user=user)
         except StoryViewed.DoesNotExist:
-            StoryViewed.objects.create(story = story, user = user)
-    return render(request, 'story/story_view.html', {'storys' :storys})
+            StoryViewed.objects.create(story=story, user=user)
+    return render(request, 'story/story_view.html', {'storys': storys})
 
 
 def get_storys_author(request):
     user = request.user
-    followings =[ f.follow for f in  FollowModel.objects.filter(user = user)]
+    followings = [f.follow for f in FollowModel.objects.filter(user=user)]
     story_authors = []
     viewed_story_authors = []
     for follow in followings:
         instance_list = []
-        user_storys = Story.objects.filter(author = follow, is_end = False)
+        user_storys = Story.objects.filter(author=follow, is_end=False)
         for story in user_storys:
             if (timezone.now() - timedelta(days=1)) > story.created_at:
                 story.is_end = True
@@ -50,7 +50,7 @@ def get_storys_author(request):
         if len(instance_list) != 0:
             for story in instance_list:
                 try:
-                    StoryViewed.objects.get(story = story, user = user)
+                    StoryViewed.objects.get(story=story, user=user)
                 except StoryViewed.DoesNotExist:
                     story_authors.append(story.author)
                     break

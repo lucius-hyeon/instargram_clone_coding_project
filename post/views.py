@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from instargram.settings import MEDIA_ROOT
-from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
+from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel, ReplyCommentModel
 from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
@@ -89,7 +89,6 @@ def make_post(user, post_list):
     return post_dict_list
 
 
-
 @login_required(login_url='login')
 def index(request):
     user = request.user
@@ -97,17 +96,21 @@ def index(request):
 
         user = request.user
         post_list = PostModel.objects.all().order_by('-id')
-        followers = [f.follow for f in FollowModel.objects.filter(user=user)[:6]]
+        followers = [f.follow for f in FollowModel.objects.filter(user=user)[
+            :6]]
         all_story_author = get_storys_author(request)
         post_list = make_post(user, post_list)
-        user_story = Story.objects.filter(author = user, is_end = False)
+        user_story = Story.objects.filter(author=user, is_end=False)
+
+        reply_comment = ReplyCommentModel.objects.all()
 
         context = {
             'followers': followers,
             'post_list': post_list,
             'authors': all_story_author[0],
             'viewed_authors': all_story_author[1],
-            'user_story' : user_story,
+            'user_story': user_story,
+            'recomments': reply_comment
         }
     return render(request, 'index.html', context)
 
@@ -121,20 +124,25 @@ def profile(request, nickname):
     author_following = [
         men.follow for men in FollowModel.objects.filter(user=author)]
     author_follower_1 = [
+<<<<<<< HEAD
         men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user = user, follow = men.user).exists()
     ]
     author_follower_0 = [
         men.user for men in FollowModel.objects.filter(follow=author) if not FollowModel.objects.filter(user = user, follow = men.user).exists()
+=======
+        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user=user, follow=men.user).exists() is not None
+    ]
+    author_follower_0 = [
+        men.user for men in FollowModel.objects.filter(follow=author) if FollowModel.objects.filter(user=user, follow=men.user).exists() is None
+>>>>>>> f1a5d025612f54740b3a8b9345b71106bc934d35
     ]
     follower_cnt = len(author_follower_0 + author_follower_1)
     print(FollowModel.objects.filter(user = user, follow = user).exists())
 
     # 해당주인의 팔로워가 내가 팔로잉 한 사람인지 판단하는 방법은?
-        # 생각 1. followmodel에서 user = user follow = 계정주인팔로워
+    # 생각 1. followmodel에서 user = user follow = 계정주인팔로워
 
-        # 생각 2. 나의 팔로잉모델(follow추출)에서 계정 주인 팔로워가 있냐 판단
-
-        
+    # 생각 2. 나의 팔로잉모델(follow추출)에서 계정 주인 팔로워가 있냐 판단
 
     is_author = False
     if nickname == user.nickname:
@@ -147,7 +155,7 @@ def profile(request, nickname):
         'author_following': author_following,
         'author_follower_0': author_follower_0,
         'author_follower_1': author_follower_1,
-        'follower_cnt' : follower_cnt,
+        'follower_cnt': follower_cnt,
         'is_author': is_author,
     }
     return render(request, 'post/profile.html', context)
@@ -284,4 +292,32 @@ def comment_delete(request, comment_id):
 
     if user == comment.author or user == comment.post.author:
         comment.delete()
+    return redirect('/')
+
+
+@login_required
+def replycomment_delete(request, post_id, comment_id):
+    user = request.user
+    print('req=', request.POST.get('id'))
+    comment = ReplyCommentModel.objects.get(id=comment_id)
+    # post = ReplyCommentModel.objects.get(post=post_id)
+    if user == comment.author or user == comment.post.author or post_id:
+        comment.delete()
+    return redirect('/')
+
+
+@ login_required
+def replycomment(request, post_id, comment_id):
+    if request.method == "POST":
+        user = request.user
+        post = PostModel.objects.get(id=post_id)
+        comment = CommentModel.objects.get(id=comment_id)
+        content = request.POST.get('relpy')
+
+        ReplyCommentModel.objects.create(
+            content=content,
+            author=user,
+            comment=comment,
+            post=post
+        )
     return redirect('/')
