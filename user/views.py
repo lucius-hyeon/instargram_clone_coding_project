@@ -67,6 +67,11 @@ def join(request):
         if exist_user:
             return render(request, 'user/join.html', {'error': '이미 가입된 사용자 이름 입니다.'})
 
+        # username 중복체크 추가
+        exist_user = get_user_model().objects.filter(username=username)
+        if exist_user:
+            return render(request, 'user/join.html', {'error': '이미 가입된 성명 입니다.'})
+
         else:
             UserModel.objects.create_user(
                 username=username,
@@ -103,6 +108,8 @@ def login(request):
 
         # authenticate is only allowed username.
         # find username
+        # username = UserModel.objects.get(email=email).username
+
         username = UserModel.objects.get(email=email).username
         # User 인증 함수. 자격 증명이 유효한 경우 User 객체를, 그렇지 않은 경우 None을 반환
         user = auth.authenticate(request, username=username, password=password)
@@ -231,7 +238,8 @@ def update(request):
         username = request.POST.get('username')
         nickname = request.POST.get('nickname')
         exist_nickname = get_user_model().objects.filter(nickname=nickname)
-        if exist_nickname and user.nickname == nickname:
+        exist_username = get_user_model().objects.filter(username=username)
+        if (exist_nickname and user.nickname == nickname) and (exist_username and user.username == username):
             user.nickname = nickname
             user.bio = bio
             user.email = email
@@ -240,6 +248,8 @@ def update(request):
             return redirect('/', user.username)
         elif exist_nickname and user.nickname != nickname:
             return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
+        elif exist_username and user.username != username:
+            return render(request, 'user/update.html', {'error': '이미 사용중인 username 입니다.'})
         else:
             user.nickname = nickname
             user.bio = bio
