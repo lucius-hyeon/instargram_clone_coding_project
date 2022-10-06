@@ -1,305 +1,195 @@
 {% extends 'base.html' %}
+{% block extra-style %}
+  <style>
+    .underline:hover {
+      cursor: pointer;
+    }
+  </style>
+
+{% endblock %}
+
 {% block content%}
+
   <!--본문 부분-->
-  <div class="main_body" id="main_body">
-    <div class="post_box" id-="post_box">
-      <div class="story_box">
-        <div class="card" id="card">
-          <button type="button" class="bg_slide_button" id="bg_slide_button_left" onclick="move_story_slide(0)">
-            <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_left.png">
-          </button>
-          <button type="button" class="bg_slide_button" id="bg_slide_button_right" onclick="move_story_slide(1)">
-            <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_right.png">
-          </button>
-          <div class="card-body" id="stories">
-            <div style="width: 10px;"></div>
-            <!-- 스토리 섹션 -->
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">0 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">1 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">2 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">3 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">4 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">5 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">6 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">7 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">8 kimphysicsman</p>
-            </div>
-            <div class="story">
-              <div class="story_img_box">
-                <img class="img_circle story_img_outline" width="56px" height="56px" src="/static/images/img_profile.jpg">
-              </div>
-              <p class="story_id">9 kimphysicsman</p>
-            </div>
-
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">스토리 공유하기</h5>
         </div>
-      </div>
-
-      <div class="card posts">
-        <div class="card-body post">
-          <div class="post_header">
-            <div class="post_header_main">
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
-              </div>
-            </div>
+        <form action="{% url 'create_story' %}" method="POST" enctype="multipart/form-data">
+          {%csrf_token%}
+          <div class="modal-body">
+            <input class="form-control" type="file" name="image">
           </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <div class="post_dots">
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-                <div style="width: 7px"></div>
-                <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
-              </div>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+            <button type="submit" class="btn btn-primary">스토리 공유</button>
           </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
-            </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="1" onclick="view_post_text_more('1')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="1">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
-          </div>
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-            <input name="1" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="1" style="opacity: 0.5;">
-              게시
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="card posts">
-        <div class="card-body post">
-          <div class="post_header">
-            <div class="post_header_main">
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-            </div>
-          </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
-            </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="2" onclick="view_post_text_more('2')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="2">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
-          </div>
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-            <input name="2" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="2" style="opacity: 0.5;">
-              게시
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="card posts">
-        <div class="card-body post">
-          <div class="post_header">
-            <div class="post_header_main">
-              <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-              <a class="post_header_main_id" href="https://velog.io/@kimphysicsman">
-                kimphysicsman
-              </a>
-            </div>
-            <div class="post_header_more">
-              <div class="post_header_more_btn_box">
-                <a href="https://velog.io/@kimphysicsman">
-                  <img width="20px" height="20px" src="/static/images/icon_menu_dots.png">
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="post_img">
-            <img width="100%" src="/static/images/img_post.jpg">
-            <div class="post_icon_box_slide">
-              <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
-            </div>
-          </div>
-          <div class="post_icon_box">
-            <div class="post_icons">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" src="/static/images/icon_share.png"></a>
-            </div>
-            <div class="post_icon_box_bookmark">
-              <a href="https://velog.io/@kimphysicsman">
-                <img width="22px" height="22px" style="margin: auto; display: block;" src="/static/images/icon_bookmark.png"></a>
-            </div>
-          </div>
-          <div class="post_like_box">
-            <img class="img_circle" width="20px" height="20px" src="/static/images/img_profile.jpg">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              bongsem</a>님
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              여러명</a>이 좋아합니다
-          </div>
-          <div class="post_text_box">
-            <a class="post_text_id" href="https://velog.io/@kimphysicsman">
-              kimphysicsman</a>
-            여기는 한강!
-            <span class="post_text_btn" name="3" onclick="view_post_text_more('3')">
-              ... 더보기
-            </span>
-            <div class="post_text_more" name="3">
-              <br><br>
-              <br><br>
-              하지만 너무가 더워 ㅠ
-            </div>
-            <div class="post_text_btn">댓글 2개 모두 보기</div>
-          </div>
-          <div class="post_d-day">
-            1일전
-          </div>
-          <div class="post_comment_input_box">
-            <div class="post_comment_imoge_box">
-              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
-            </div>
-            <input name="3" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
-            <button class="post_comment_input_btn" name="3" style="opacity: 0.5;">
-              게시
-            </button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
-    {% include 'post/side_section.html' %}
   </div>
-{% endblock %}
+  <div class="main_body" id="main_body">
+    <div class="post_box" id-="post_box">
+
+      {% include 'story/story.html' %}
+      {% for post in post_list %}
+        <div>
+          <div class="card posts">
+            <div class="card-body post">
+              <div class="post_header">
+                <div class="post_header_main">
+                  <img class="img_circle" width="32px" height="32px" src="{{post.post.author.profile_image.url}}">
+                  <a class="post_header_main_id" href="{% url 'profile' post.post.author.nickname %}">
+                    {{post.post.author}}
+                  </a>
+                </div>
+                {% if user == post.post.author %}
+                  <div class="post_header_more">
+                    <div class="post_header_more_btn_box">
+                      <div class="btn-group dropstart">
+                        <img type='button' class="dropdown-toggle" width="20px" height="20px" src="/static/images/icon_menu_dots.png" data-bs-toggle="dropdown" aria-expanded="false">
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" href="detail/{{post.post.id}}" ">수정</a>
+                          </li>
+                          <li>
+                            <a class=" dropdown-item" href="delete/{{post.post.id}}">삭제</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+              </div>
+              {% for image in post.post.imagemodel_set.all %}
+                <div class="post_img">
+                  <img width="100%" src="{{image.image.url}}">
+                  <div class="post_icon_box_slide">
+                    <div class="post_dots">
+                      <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_fill.png">
+                      <div style="width: 7px"></div>
+                      <img width="7px" height="7px" style="display: none;" src="/static/images/post_slide_dot_empty.png">
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              <div class="post_icon_box">
+                <div class="post_icons">
+                  {% if post.like == 0 %}
+                    <a href="{% url 'like' post.post.id %}">
+                      <img width="22px" height="22px" src="/static/images/icon_heart_empty.png"></a>
+                  {% else %}
+                    <a href="{% url 'like' post.post.id %}">
+                      <img width="22px" height="22px" src="/static/images/icon_heart_fill.png">
+                    </a>
+                  {% endif %}
+                  <a href="{% url 'post_detail' post.post.id %}" id='detail_feed'>
+                    <img width="22px" height="22px" src="/static/images/icon_comment.png"></a>
+                  <a href="#">
+                    <img width="22px" height="22px" src="/static/images/icon_share.png">
+                  </a>
+                </div>
+                <div class="post_icon_box_bookmark">
+                  {% if post.bookmark == 0 %}
+                    <a href="{% url 'bookmark' post.post.id %}">
+                      <span class="material-icons-outlined" style='color:black;'>
+                        bookmark_border
+                      </span>
+                    </a>
+                  {% else %}
+                    <a href="{% url 'bookmark' post.post.id %}">
+                      <span class="material-icons-outlined" style='color : black;'>
+                        bookmark
+                      </span>
+                    </a>
+                  {% endif %}
+
+                </div>
+              </div>
+              <div class="post_like_box">
+                <span style='font-weight: 600;'>좋아요
+                  {{post.post.post_like.all | length}}개</span>
+              </div>
+              <div class="post_text_box">
+                <a class="post_text_id" href="#">
+                  {{post.post.author}}</a>
+                {{post.post.content}}
+                <span class="post_text_btn" name="{{post.post.id}}" onclick="view_post_text_more('{{post.post.id}}')">
+                  ... 더보기(댓글)
+                </span>
+
+                <div class="post_text_more" name="{{post.post.id}}" style='margin-top: 15px; font: weight 600px;'>
+                  <div class='row'>
+                    {% for comment in post.comments %}
+
+                      <div class='col-1 mb-1'>
+                        <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
+                      </div>
+                      <div class="col-11">
+                        <span>
+                          <b>{{comment.author}}</b>
+                        </span>
+                        <span>{{comment.content}}</span>
+                        <span>{{comment.created_at}}</span>
+                        {% if user == comment.author or user == post.post.author %}
+                          <a href="{% url 'comment_delete' comment.id%}">삭제</a>
+                        {% endif %}
+                        {% for recomment in recomments %}
+                          {% if comment.id == recomment.comment.id %}
+                            <div style='margin-top: 20px'>
+                              <img src="{{comment.author.profile_image.url}}" width="32px" height="32px" alt="">
+                              <span>
+                                <b>{{recomment.author}}</b>
+                              </span>
+                              <span>{{ recomment.content }}</span>
+                              {% if user == recomment.author or user == comment.author %}
+                                <a href="{% url 'replycomment_delete' post_id=recomment.id comment_id=recomment.id %}">삭제</a>
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+
+                        <form action="/replycomment/{{post.post.id}}/{{comment.id}}/" method="post">
+                          <div class="post_comment_input_box">
+                            <div class="post_comment_imoge_box">
+                              <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+                            </div>
+                            {%csrf_token%}
+                            <input name="relpy" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                            <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
+                              게시
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="post_d-day" style="font-size: 13px;">
+                  {{post.post.created_at|timesince}}
+                </div>
+                <form action='comment/{{post.post.id}}/' method='post'>
+                  <div class="post_comment_input_box">
+                    <div class="post_comment_imoge_box">
+                      <img width="24px" height="24px" src="/static/images/icon_imoge.png">
+                    </div>
+
+                    {%csrf_token%}
+                    <input name="content" aria-label="입력 검색" class="post_comment_input" autocapitalize="none" placeholder="댓글 달기..." type="text" value="">
+                    <button class="post_comment_input_btn" name="{{post.post.id}}" style="opacity: 0.5;">
+                      게시
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div>
+          {% endfor %}
+          {% include 'post/side_section.html' %}
+        </div>
+      {% endblock %}

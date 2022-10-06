@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+  <style>
+    .box {
+      width: 150px;
+      height: 150px;
+      border-radius: 70%;
+      overflow: hidden;
+    }
+
+    .profile {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .feed_box {
+      margin: 20px 0;
+      border: solid 1px gray;
+      background-color: white;
+    }
+
+    .box_wrap {
+      /* border: solid 1px #000; */
+      padding-top: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .box_inner {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .box_inner > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .box_inner > div {
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      object-fit: cover;
+    }
+
+    .box_inner:hover > div {
+      display: flex;
+      cursor: pointer;
+      color: white;
+      /* background-color: rgba(0, 0, 0, 0.5); */
+      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    }
+  </style>
+
+  <div style="display: flex; flex-direction: row;text-align: center; justify-content: center;margin-top: 60px; background-color:#FAFAFA">
+    <div style="padding: 20px 60px">
+      <div class="box" style="width: 175px; height: 175px;">
+
+        <img class="profile" src="{{user.profile_image.url}}">
+
+      </div>
+    </div>
+    <div style="text-align: left">
+      <div style="display: flex; flex-direction: row; margin: 20px 0">
+        <div style="font-size: 26px; margin-right: 40px">
+          {{ author.nickname }}
+        </div>
+        {% if is_author%}
+          <button type="button" onclick="location.href = '/user/update/'" id="button_profile_upload" style="margin-right: 40px; border: 0.01px solid rgba(0, 0, 0, 0.1); width: 100px;">
+            프로필 편집
+          </button>
+        {% endif %}
+      </div>
+
+      <div style="margin-bottom: 20px">
+        게시물
+        {{author_post|length}}
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalScrollable">
+          팔로워
+          {{follower_cnt}}
+          / 팔로잉
+          {{ author_following|length }}
+        </button>
+
+      </div>
+      <div>
+        <b>{{ author.username }}</b>
+        <br>
+        <b>{{ user.bio }}</b>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">팔로워 & 팔로잉</h5>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">
+            닫기
+          </button>
+        </div>
+        <div id="modal_follower" class="modal-body row">
+          {% for follower in author_follower_1 %}
+            <div class="row p-3" style="height: 60px;">
+              <div class="col-1">
+                <a href="{% url 'profile' follower.nickname %}">
+                  <img src="{{follower.profile_image.url}}" width="40px" height="40px" alt="" style="border-radius: 50%;">
+                </a>
+              </div>
+              <div class="col-6 fn-sm" style="padding-left: 20px;">
+                <div class="fn-m">
+                  <a href="{% url 'profile' follower.nickname %}" class="user-name" style="text-decoration: none; color: black;">
+                    {{ follower.nickname }}
+                  </a>
+                </div>
+                <div>{{follower.username}}
+                  -
+                  {{ follower.bio }}</div>
+              </div>
+              <div class="col-4 text-end">
+                <button id="user-{{follower.nickname}}" onclick="switchFollow(`{{follower.id}}`, `{{follower.nickname}}`)" class="btn btn-outline-danger">취소</button>
+                <!-- <button id="user-{{follower.nickname}}" onclick="switchFollow(`{{follower.id}}`, `{{follower.nickname}}`)" class="btn btn-outline-primary">팔로우</button> -->
+              </div>
+            </div>
+          {% endfor %}
+          {% for follower in author_follower_0 %}
+            <div class="row p-3" style="height: 60px;">
+              <div class="col-1">
+                <a href="{% url 'profile' follower.nickname %}">
+                  <img src="{{follower.profile_image.url}}" width="40px" height="40px" alt="" style="border-radius: 50%;">
+                </a>
+              </div>
+              <div class="col-6 fn-sm" style="padding-left: 20px;">
+                <div class="fn-m">
+                  <a href="{% url 'profile' follower.nickname %}" class="user-name" style="text-decoration: none; color: black;">
+                    {{ follower.nickname }}
+                  </a>
+                </div>
+                <div>{{follower.username}}
+                  -
+                  {{ follower.bio }}</div>
+              </div>
+              <div class="col-4 text-end">
+                <!-- <button id="user-{{follower.nickname}}" onclick="switchFollow(`{{follower.id}}`, `{{follower.nickname}}`)" class="btn btn-outline-danger">취소</button> -->
+                <button id="user-{{follower.nickname}}" onclick="switchFollow(`{{follower.id}}`, `{{follower.nickname}}`)" class="btn btn-outline-primary">팔로우</button>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div id="modal_following" class="modal-body row" style="display: none;">
+          {% for followe in author_following%}
+            <div class="row p-3" style="height: 60px;">
+              <div class="col-1">
+                <a href="{% url 'profile' followe.nickname %}">
+                  <img src="{{followe.profile_image.url}}" width="40px" height="40px" alt="" style="border-radius: 50%;">
+                </a>
+              </div>
+              <div class="col-6 fn-sm" style="padding-left: 20px;">
+                <div class="fn-m">
+                  <a href="{% url 'profile' followe.nickname %}" class="user-name" style="text-decoration: none; color: black;">
+                    {{ followe.nickname }}
+                  </a>
+                </div>
+                <div>{{followe.username}}
+                  -
+                  {{ followe.bio }}</div>
+              </div>
+              <div class="col-4 text-end">
+                <button id="user-{{followe.nickname}}-2" onclick="switchFollow2(`{{followe.id}}`, `{{followe.nickname}}`)" class="btn btn-outline-danger">취소</button>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+          <button id="btn_follower" type="button" class="btn btn-outline-success">팔로워</button>
+          <button id="btn_following" type="button" class="btn btn-outline-primary">팔로잉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top: solid 2px rgba(50,50,50,0.1); width: 100%">
+
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px">
+      <div id="button_feed_list" style="cursor: pointer;margin: 0 30px;display: flex; flex-direction: row;align-items: center">
+        <span class="material-icons-outlined">grid_on</span>내 게시물</div>
+      {% comment %} <div id="button_feed_like_list" style="cursor: pointer;margin: 0 30px;display: flex; flex-direction: row;align-items: center">
+        <span class="material-icons-outlined">favorite_border</span>좋아요</div> {% endcomment %}
+      <div id="button_feed_bookmark_list" style="cursor: pointer;margin: 0 30px;display: flex; flex-direction: row;align-items: center">
+        <span class="material-icons-outlined">bookmark_border</span>북마크</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row" id="feed_list">
+      {% for post in author_post %}
+        <div class="col-4 mb-4">
+          <div class="box_wrap">
+            <div class="box_inner">
+              <img src="{{post.imagemodel_set.all.0.image.url}}">
+            </div>
+            <div class="box_inner">
+              <div onclick="location.href=`{% url 'post_detail' post.id %}`">
+                &#9829;
+                {{post.post_like.all | length}}개 &#128172;
+                {{post.commentmodel_set.all.count}}개
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="row" id="bookmark_feed_list" style="display:none;">
+      {% for post in author_bookmark_post %}
+        <div class="col-4 mb-4">
+          <div class="box_wrap">
+            <div class="box_inner">
+              <img src="{{post.imagemodel_set.all.0.image.url}}">
+            </div>
+            <div class="box_inner">
+              <div onclick="location.href=`{% url 'post_detail' post.id %}`">
+                {{post.commentmodel_set.all.count}}개
+                {{post.post_like.all | length}}개
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- Optional JavaScript; choose one of the two! -->
+  <script>
+    $("#button_feed_list").click(function () {
+      $('#feed_list').css({display: 'flex'});
+      // $('#like_feed_list').css({display: 'none'});
+      $('#bookmark_feed_list').css({display: 'none'});
+    });
+    // $("#button_feed_like_list").click(function () {
+    //   $('#feed_list').css({display: 'none'});
+    //   $('#like_feed_list').css({display: 'flex'});
+    //   $('#bookmark_feed_list').css({display: 'none'});
+    // });
+    $("#button_feed_bookmark_list").click(function () {
+      $('#feed_list').css({display: 'none'});
+      $('#like_feed_list').css({display: 'none'});
+      $('#bookmark_feed_list').css({display: 'flex'});
+    });
+    $("#btn_follower").click(function () {
+      $('#modal_following').css({display: 'none'});
+      $('#modal_follower').css({display: 'flex'});
+    });
+    $("#btn_following").click(function () {
+      $('#modal_following').css({display: 'flex'});
+      $('#modal_follower').css({display: 'none'});
+    });
+  </script>
+  {% block extra-script %}
+    <script>
+      function switchFollow(userId, nickname) {
+        $.ajax({
+          type: 'GET',
+          url: `/follow/${userId}`,
+          data: {},
+          success: function (response) {
+            console.log(response.msg)
+
+            if ($(`#user-${nickname}`).text() == '팔로우') {
+              $(`#user-${nickname}`).removeClass('btn-primary')
+              $(`#user-${nickname}`).addClass('btn-outline-danger')
+              $(`#user-${nickname}`).text('취소')
+            } else {
+              $(`#user-${nickname}`).removeClass('btn-outline-danger')
+              $(`#user-${nickname}`).addClass('btn-primary')
+              $(`#user-${nickname}`).text('팔로우')
+            }
+
+          }
+        })
+      }
+
+      function switchFollow2(userId, nickname) {
+        $.ajax({
+          type: 'GET',
+          url: `/follow/${userId}`,
+          data: {},
+          success: function (response) {
+            console.log(response.msg)
+
+            if ($(`#user-${nickname}-2`).text() == '팔로우') {
+              $(`#user-${nickname}-2`).removeClass('btn-primary')
+              $(`#user-${nickname}-2`).addClass('btn-outline-danger')
+              $(`#user-${nickname}-2`).text('취소')
+            } else {
+              $(`#user-${nickname}-2`).removeClass('btn-outline-danger')
+              $(`#user-${nickname}-2`).addClass('btn-primary')
+              $(`#user-${nickname}-2`).text('팔로우')
+            }
+
+          }
+        })
+      }
+    </script>
+  {% endblock %}
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+
+{% endblock %}

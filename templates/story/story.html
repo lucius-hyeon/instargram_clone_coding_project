@@ -1,0 +1,81 @@
+<div class="story_box">
+    <div class="card" id="card">
+      <button type="button" class="bg_slide_button" id="bg_slide_button_left" onclick="move_story_slide(0)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_left.png">
+      </button>
+      <button type="button" class="bg_slide_button" id="bg_slide_button_right" onclick="move_story_slide(1)">
+        <img width="12px" height="12px" style="margin: -5px 0px 0px -2px" src="/static/images/button_story_slide_right.png">
+      </button>
+      <div class="card-body" id="stories">
+
+        <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+
+        <!-- Button trigger modal -->
+        
+        {% if user_story.count == 0 %}
+        <div class="story row" style="">
+          <div class="story_img_box_none">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="{{user.profile_image.url}}">
+          </div>
+          <p class="story_id text-center">{{user.nickname}}</p>
+        </div>
+        <div class="" style="width: 30px; height: 30px; border-radius: 50%; overflow: hidden; position: relative; left: -15px; top: 35px;">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="padding-left : 8px; ">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        {% else %}
+        <div class="story" style="">
+          <div class="story_img_box">
+            <a href="{% url 'view_story' user.nickname %}">
+              <img class="img_circle story_img_outline" width="56px" height="56px" src="{{user.profile_image.url}}">
+            </a>
+          </div>
+          <p class="story_id text-center">{{user.nickname}}</p>
+        </div>
+        {% endif %}
+      
+
+      
+        <!-- 스토리 섹션 -->
+        {% for author in authors %}
+        <div class="story">
+          <div class="story_img_box">
+            <a href="{% url 'view_story' author.nickname %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+          <p class="story_id text-center">{{author.nickname}}</p>
+        </div>
+        {% endfor %}
+        {% for author in viewed_authors %}
+        <div class="story">
+          <div class="story_img_box_0">
+            <a href="{% url 'view_story' author.nickname %}">
+                <img class="img_circle story_img_outline" width="56px" height="56px" src="{{author.profile_image.url}}">
+            </a>
+          </div>
+            <p class="story_id text-center">{{author.nickname}}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+
+  <script>
+        const swiper1 = new Swiper('.swiper', {
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+            hiddenClass : 'swiper-button-hidden'
+        },
+        });
+  </script>

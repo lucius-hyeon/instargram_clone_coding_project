@@ -1,112 +1,73 @@
-<div class="profile_box" id="profile_box">
+<div class="profile_box" id="profile_box" style="padding: 10px;">
   <div class="my_account">
-    <div class="my_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-      <img class="img_circle" width="56px" height="56px" src="/static/images/img_profile.jpg">
+    <div class="my_profile" onclick="location.href=`{% url 'profile' user.nickname %}`">
+      <img class="img_circle" width="50px" height="50px" src="{{user.profile_image.url}}">
     </div>
-    <div class="my_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-      <p style="line-height: 0.5; font-weight: 500">kimphysicsman</p>
-      <p style="line-height: 0.3; color: #909090;">DongWoo Kim</p>
+    <div class="my_id" onclick="location.href=''">
+      <p style="line-height: 0.5; font-weight: 500">{{user.nickname}}</p>
+      <p style="line-height: 0.3; color: #909090;">{{user.bio}}</p>
     </div>
     <div class="my_trans_button">
-      <a href="https://velog.io/@kimphysicsman">전환</a>
+      <a href="{% url 'logout'%}">로그아웃</a>
     </div>
   </div>
 
   <div class="other_accounts">
     <div class="other_accounts_title">
       <p style="color: #909090; margin-bottom: 0px">
-        회원님을 위한 추천</p>
-      <p style="font-size: 12px; margin-bottom: 0px">모두 보기</p>
+        자주 소통하는 사람</p>
+      <!-- <p class = 'text-primary'style="font-size: 12px; margin-bottom: 0px">추천받기</p> -->
+      <a href="{% url 'recommand_user' user.nickname %}">추천받기</a>
     </div>
     <div class="other_accounts_body">
       {% for f in followers%}
         <div class="other_account">
-          <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-            <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
+          <div class="other_profile">
+            <!-- f.nickname으로 모델 삭제 생성 후 바꿔줘야함 -->
+            <a href="{% url 'profile' f.nickname %}">
+              <img class="img_circle" width="32px" height="32px" src="{{f.profile_image.url}}">
+            </a>
           </div>
-          <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-            <p style="line-height: 0.1; font-weight: 500">{{f.follow.username}}</p>
-            <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
+          <div class="other_id" onclick="location.href=``">
+            <p style="line-height: 0.1; font-weight: 500">{{f.nickname}}
+            <p style="line-height: 0.1; color: #909090; font-size: 12px">
+              <b>
+                {{f.username}} -
+              </b>
+              <span style="line-height: 0.1; color: #909090; font-size: 12px">{{f.bio}}</span>
+            </p>
           </div>
           <div class="other_follow_button">
-            <a href="{% url 'user:switch_follow' f.follow.id %}">팔로우</a>
+            <!-- 현재는 스위치 팔로워 -->
+            <!-- 모델의 변경 필요 -->
+            <span class="underline" onclick="switchFollow(`{{f.follow.id}}`)">메시지</span>
           </div>
         </div>
       {% endfor %}
-
-      <div class="other_account">
-        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-        </div>
-        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
-          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
-        </div>
-        <div class="other_follow_button">
-          <a href="https://velog.io/@kimphysicsman">팔로우</a>
-        </div>
-      </div>
-      <div class="other_account">
-        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-        </div>
-        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
-          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
-        </div>
-        <div class="other_follow_button">
-          <a href="https://velog.io/@kimphysicsman">팔로우</a>
-        </div>
-      </div>
-      <div class="other_account">
-        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-        </div>
-        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
-          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
-        </div>
-        <div class="other_follow_button">
-          <a href="https://velog.io/@kimphysicsman">팔로우</a>
-        </div>
-      </div>
-      <div class="other_account">
-        <div class="other_profile" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <img class="img_circle" width="32px" height="32px" src="/static/images/img_profile.jpg">
-        </div>
-        <div class="other_id" onclick="location.href='https://velog.io/@kimphysicsman';">
-          <p style="line-height: 0.1; font-weight: 500">jun9._.k</p>
-          <p style="line-height: 0.1; color: #909090; font-size: 12px">bongsem님이 팔로우합니다.</p>
-        </div>
-        <div class="other_follow_button">
-          <a href="https://velog.io/@kimphysicsman">팔로우</a>
-        </div>
-      </div>
     </div>
-
   </div>
   <div class="footer" id="footer">
-    <a href="https://velog.io/@kimphysicsman">소개</a>
+    <a href="#">소개</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">도움말</a>
+    <a href="#">도움말</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">홍보 센터</a>
+    <a href="#">홍보 센터</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">API</a>
+    <a href="#">API</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">채용 정보</a>
+    <a href="#">채용 정보</a>
     <br>
-    <a href="https://velog.io/@kimphysicsman">개인정보처리방침</a>
+    <a href="#">개인정보처리방침</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">약관</a>
+    <a href="#">약관</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">위치</a>
+    <a href="#">위치</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">인기 계정</a>
+    <a href="#">인기 계정</a>
     ·
-    <a href="https://velog.io/@kimphysicsman">해시태그</a>
+    <a href="#">해시태그</a>
     <br>
-    <a href="https://velog.io/@kimphysicsman">언어</a>
+    <a href="#">언어</a>
     <br>
     <br>
     <p>© 2022 INSTAGRAM FROM META</p>

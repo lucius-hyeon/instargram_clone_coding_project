@@ -15,14 +15,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views
+from user.views import switch_follow, kakao_social_login, kakao_social_login_callback, get_profile
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 # from django.conf import settings
 # from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('post.urls')),
     path('user/', include('user.urls')),
+    path('story/', include('story.urls')),
+
+    # follow
+    path('follow/<int:user_id>/', switch_follow, name="switch_follow"),
+
+    # kakao_login
+    path('account/login/kakao/', kakao_social_login, name='kakao_login'),
+    path('account/login/kakao/callback/',
+         kakao_social_login_callback, name='kakao_login_callback'),
+
+    path('', include('post.urls')),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
