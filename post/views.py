@@ -16,18 +16,16 @@ from story.views import get_storys_author
 
 # Create your views here.
 
-
-def test_html(request):
-    # return render(request, 'post/temp_home.html')
-    return render(request, 'post/test.html')
+# 게시글 추가하기
 
 
-@login_required(login_url='login')
+@login_required(login_url='logn')
 def post_add(request):
     if request.method == 'POST':
-
+        # TODO 이미지 없어도 되는지 확인해보기.
         user = request.user
         content = request.POST.get('content', '')
+
         image = request.FILES.get('file')
         image_name = request.POST.get('image', '')
 
@@ -37,6 +35,8 @@ def post_add(request):
 
         return render(request, 'index.html')
 
+# 게시글 수정하기
+
 
 @login_required(login_url='login')
 def post_update(request, post_id):
@@ -45,17 +45,16 @@ def post_update(request, post_id):
         post = PostModel.objects.get(id=post_id)
         post.content = request.POST.get('content', '')
         post.save()
+        # 이미지가 변경되었을 때만 이미지 새로 저장
         if request.FILES.get('file') != None:
             image = ImageModel.objects.get(post_id=post_id)
             image.image = request.FILES.get('file')
             image.image_name = request.POST.get('image', '')
             image.save()
 
-        # my_post = PostModel.objects.create(author=user, content=content)
-        # my_image = ImageModel.objects.create(
-        #     post=my_post, image=image, image_name=image_name).update(available=False)
-
         return render(request, 'index.html')
+
+# 게시글 필요 정보 모아서 저장하기
 
 
 def make_post(user, post_list):
@@ -86,6 +85,8 @@ def make_post(user, post_list):
         post_dict_list.append(instance)
 
     return post_dict_list
+
+# index.html 게시글 목록 가지고 오기
 
 
 @login_required(login_url='login')
@@ -151,6 +152,8 @@ def profile(request, nickname):
     }
     return render(request, 'post/profile.html', context)
 
+# 게시글 상세페이지
+
 
 def post_detail(request, post_id):
     # instance = {
@@ -165,10 +168,14 @@ def post_detail(request, post_id):
     print(context)
     return render(request, 'post/post_detail.html', context)
 
+#경민 - 변경예정
+# 내가 팔로잉한 사람의 친구를 추천하려는 함수 (30명)
+# 부족하다면 모든 사용자에서 부족한 만큼 채워서 보낸다.
+# 나의 친구의 친구를 추천하고 부족한 만큼 채워서 보여줄 때, 친구의 친구와 겹치지 않게 시도했다.
+
 
 def recommand_user(request, username):
     user = request.user
-    print(user)
     unfollowers = []
     followers_set = [f.follow for f in FollowModel.objects.filter(user=user)]
     followers = FollowModel.objects.filter(user=user)[:5]
@@ -188,6 +195,8 @@ def recommand_user(request, username):
     print(list(set(unfollowers)))
     return render(request, 'post/recommand.html', context)
 
+# 댓글
+
 
 @login_required
 def comment(request, post_id):
@@ -195,33 +204,25 @@ def comment(request, post_id):
 
         content = request.POST.get('content')
 
+        # 입력칸이 빈칸이라면 처리 안됨.
         if content == '':
             return redirect('/')
 
         user = request.user
+        # 포스트  아이디를 통해 포스트 모델 가져온다.
         post = PostModel.objects.get(id=post_id)
 
+        # 받아온 데이터들을 CommentModel에 저장
         cm = CommentModel()
         cm.content = content
         cm.author = user
-        # cm.liker = liker.set()
         cm.post = post
         cm.save()
 
         return redirect('/')
 
 
-@login_required
-def comments_list(request, post_id):
-    if request.method == 'GET':
-        print('댓글 get 실행')
-        # post = PostModel.objects
-        # cm = CommentModel.objects.filter(post_id = post_id)
-
-        # return render(request, 'index.html', {'comment':cm})
-        return render(request, 'index.html')
-
-
+# 좋아요
 @login_required
 def is_like(request, post_id):
     if request.method == 'GET':
@@ -230,12 +231,14 @@ def is_like(request, post_id):
 
         post = PostModel.objects.get(id=post_id)  # 포스트 아이디 참조
 
+        # 라이크 모델이 있을 경우 (라이크 모델 삭제)
         try:
             is_like = LikeModel.objects.get(post=post, user=user)
             is_like.delete()
 
             return redirect('/')
 
+        # 라이크 모델이 없을 경우 (라이크 모델 생성)
         except LikeModel.DoesNotExist:
             like_model.is_like = True
             like_model.post = post
@@ -253,18 +256,21 @@ def switch_bookmark(request, post_id):
 
         post = PostModel.objects.get(id=post_id)  # 포스트 아이디 참조
 
+        # 북마크 있을경우 삭제
         try:
             is_bookmark = BookMarkModel.objects.get(post=post, user=user)
             is_bookmark.delete()
 
             return redirect('/')
-
+        # 북마크 없을 경우 생성
         except BookMarkModel.DoesNotExist:
             bookmark.post = post
             bookmark.user = user
             bookmark.save()
 
             return redirect('/')
+
+# 게시글 삭제
 
 
 @login_required
@@ -275,28 +281,33 @@ def post_delete(request, post_id):
         post.delete()
     return redirect('/')
 
+# 댓글 삭제
+
 
 @login_required
 def comment_delete(request, comment_id):
     user = request.user
     comment = CommentModel.objects.get(id=comment_id)
 
+    # 코멘트를 쓴 사람과 유저과 같거나 포스트를 쓴 사람이 유저라면 삭제 가능
     if user == comment.author or user == comment.post.author:
         comment.delete()
     return redirect('/')
 
 
+# 대댓글 삭제
 @login_required
 def replycomment_delete(request, post_id, comment_id):
     user = request.user
-    print('req=', request.POST.get('id'))
-    comment = ReplyCommentModel.objects.get(id=comment_id)
-    # post = ReplyCommentModel.objects.get(post=post_id)
-    if user == comment.author or user == comment.post.author or post_id:
-        comment.delete()
+    reply_comment = ReplyCommentModel.objects.get(id=comment_id)
+
+    # 게시글 작성자, 게시글의 댓글 작성자 , 댓글의 댓글 작성자가 맞다면 삭제할 수 있다
+    if user == reply_comment.author or user == reply_comment.post.author or user == reply_comment.comment.author:
+        reply_comment.delete()
     return redirect('/')
 
 
+# 대댓글 생성
 @ login_required
 def replycomment(request, post_id, comment_id):
     if request.method == "POST":
