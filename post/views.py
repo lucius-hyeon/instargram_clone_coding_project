@@ -133,7 +133,6 @@ def profile(request, nickname):
 
     # 해당주인의 팔로워가 내가 팔로잉 한 사람인지 판단하는 방법은?
     # 생각 1. followmodel에서 user = user follow = 계정주인팔로워
-
     # 생각 2. 나의 팔로잉모델(follow추출)에서 계정 주인 팔로워가 있냐 판단
 
     is_author = False
