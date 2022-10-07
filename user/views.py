@@ -247,18 +247,12 @@ def update(request):
         # 닉네임은 중복이 불가한 컬럼이다. 회원정보 수정시 원래 닉네임과 같으면 변경이 안되는 걸 막기위한 코드다.
 
         # TODO
-        if (exist_nickname and user.nickname == nickname) and (exist_username and user.username == username):
-            user.nickname = nickname
-            user.bio = bio
-            user.email = email
-            user.username = username
-            user.save()
-            return redirect('/', user.username)
         # 입력한 닉네임과 db에 저장되어있는 닉네임이 중복되고 내 닉네임과 다르다면 에러창을 띄운다.
-        elif exist_nickname and user.nickname != nickname:
+        if exist_nickname and user.nickname != nickname:
             return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
         elif exist_username and user.username != username:
             return render(request, 'user/update.html', {'error': '이미 사용중인 username 입니다.'})
+        # 이게 있어야 하는지 의문이다.
         else:
             user.nickname = nickname
             user.bio = bio
