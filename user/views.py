@@ -1,7 +1,4 @@
-from msilib.schema import ListView
-from tkinter import PhotoImage
 from django.shortcuts import render, redirect
-# from django.contrib import messages
 from .models import UserModel, FollowModel
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
