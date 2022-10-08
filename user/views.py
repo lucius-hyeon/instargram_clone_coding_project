@@ -15,9 +15,13 @@ from django.contrib.auth.hashers import check_password
 from django.contrib import messages, auth
 
 
-# 팔로잉 & 언팔로잉
 @login_required(login_url='login')
 def switch_follow(request, user_id):
+    """
+    Switching follow & unfollow
+        Parameters:
+            user_id (int) : A specipical user's PK
+    """
     # pk https://stackoverflow.com/questions/2165865/django-queries-id-vs-pk
     user = UserModel.objects.get(pk=request.user.id)
     follow = UserModel.objects.get(pk=user_id)
@@ -134,8 +138,12 @@ def logout(request):
     return redirect('login')
 
 
-# 처음 카카오 로그인 시 회원 가입 스킵을 위한 임시 닉네임을 만드는 함수
+
 def get_random_nickname():
+    """
+    처음 소셜 로그인을 시도한 사용자의 임시 닉네임
+    Return random nickname
+    """
     rand_str = ''
     while True:
         for _ in range(10):
@@ -146,11 +154,12 @@ def get_random_nickname():
         else:
             return rand_str
 
-# 처음 카카오 로그인 시 회원 가입 스킵을 위한 임시 비밀번호를 만드는 함수
-# 현재 서비스 흐름은 기존 비밀번호를 모르면 바꿀 수 없음
-
 
 def get_random_password():
+    """
+    처음 소셜 로그인을 시도한 사용자의 임시 패스워드
+    Return random password
+    """
     rand_str = ''
     while True:
         for _ in range(30):
@@ -158,40 +167,40 @@ def get_random_password():
             return rand_str
 
 
-# 카카오 로그인 문서 https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#before-you-begin-process
-# 앱키(클라이언트아이디)를 담아 고객에게 로그인을 요청하고
-# 데이터(인가코드)를 담은 응답을 redirect_uri로 보낸다
+
 def kakao_social_login(request):
+    """
+    카카오 소셜 로그인 요청 함수, https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#before-you-begin-process
+    카카오톡에 앱키를 담아 사용자에게 /oauth/authorize/에 카카오 로그인 요청
+    """
     if request.method == 'GET':
         client_id = 'b69e5d10ed989fce828f23f98a5265d9'
-        redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback'
+        redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback' # 인가 코드를 받을 URI
         return redirect(
             f'https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code'
         )
 
-# 받은 데이터(인가코드)로 접근 토큰을 받는다.
-# 받은 접근 토큰으로 카카오에 사용자의 정보를 가져와서
-# 앱 내에서 유효성 검사를 진행하고 활용한다.
 
 
 def kakao_social_login_callback(request):
+    """
+    카카오 소셜 로그인 콜백 함수
+    받은 인가 코드, 애플리케이션 정보를 담아 /oath/token/에 post요청하여 접근코드를 받아 처리하는 함수
+    """
     try:
         code = request.GET.get('code')
         client_id = 'b69e5d10ed989fce828f23f98a5265d9'
-        redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback'
+        redirect_uri = 'http://127.0.0.1:8000/account/login/kakao/callback' # 인가 코드가 리다이렉트된 URI
         token_request = requests.post(
             'https://kauth.kakao.com/oauth/token', {'grant_type': 'authorization_code',
                                                     'client_id': client_id, 'redierect_uri': redirect_uri, 'code': code}
         )
-        # token_request = requests.get(
-        # f'https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}'
-        # )
+        
         token_json = token_request.json()
 
         error = token_json.get('error', None)
 
         if error is not None:
-            print(error)
             return JsonResponse({"message": "INVALID_CODE"}, status=400)
 
         access_token = token_json.get("access_token")
@@ -211,13 +220,15 @@ def kakao_social_login_callback(request):
     kakao_id = profile_json.get('id')
     username = profile_json['properties']['nickname']
 
+    #------회원 정보 조회 및 가입 처리------#
+
     if UserModel.objects.filter(kakao_id=kakao_id).exists():
         user = UserModel.objects.get(kakao_id=kakao_id)
-        auth.login(request, user)  # 로그인 처리
+        auth.login(request, user)
     else:
         UserModel.objects.create(
             username=username,
-            nickname=get_random_nickname(),  # usermodel에 없을 때 까지 생성 후 리턴
+            nickname=get_random_nickname(),
             password=get_random_password(),
             kakao_id=kakao_id,
         )
