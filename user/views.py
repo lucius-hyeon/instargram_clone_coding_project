@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import UserModel, FollowModel
-from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
