@@ -18,6 +18,7 @@ class UserModel(AbstractUser):
     kakao_id = models.CharField(max_length=256, null=True, blank=True)
 
 
+
 class FollowModel(models.Model):
     user = models.ForeignKey(
         UserModel, on_delete=models.CASCADE, related_name='user')

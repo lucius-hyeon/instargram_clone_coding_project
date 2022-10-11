@@ -97,7 +97,7 @@
           팔로워
           {{follower_cnt}}
           / 팔로잉
-          {{ author_following|length }}
+          {{following_cnt}}
         </button>
 
       </div>
@@ -168,7 +168,7 @@
           {% endfor %}
         </div>
         <div id="modal_following" class="modal-body row" style="display: none;">
-          {% for followe in author_following%}
+          {% for followe in author_following_1%}
             <div class="row p-3" style="height: 60px;">
               <div class="col-1">
                 <a href="{% url 'profile' followe.nickname %}">
@@ -187,6 +187,28 @@
               </div>
               <div class="col-4 text-end">
                 <button id="user-{{followe.nickname}}-2" onclick="switchFollow2(`{{followe.id}}`, `{{followe.nickname}}`)" class="btn btn-outline-danger">취소</button>
+              </div>
+            </div>
+          {% endfor %}
+          {% for followe in author_following_0%}
+            <div class="row p-3" style="height: 60px;">
+              <div class="col-1">
+                <a href="{% url 'profile' followe.nickname %}">
+                  <img src="{{followe.profile_image.url}}" width="40px" height="40px" alt="" style="border-radius: 50%;">
+                </a>
+              </div>
+              <div class="col-6 fn-sm" style="padding-left: 20px;">
+                <div class="fn-m">
+                  <a href="{% url 'profile' followe.nickname %}" class="user-name" style="text-decoration: none; color: black;">
+                    {{ followe.nickname }}
+                  </a>
+                </div>
+                <div>{{followe.username}}
+                  -
+                  {{ followe.bio }}</div>
+              </div>
+              <div class="col-4 text-end">
+                <button id="user-{{followe.nickname}}-2" onclick="switchFollow2(`{{followe.id}}`, `{{followe.nickname}}`)" class="btn btn-outline-primary">팔로우</button>
               </div>
             </div>
           {% endfor %}
