@@ -132,10 +132,11 @@
                         <span>
                           <b>{{comment.author}}</b>
                         </span>
-                        <span>{{comment.content}}</span>
-                        <span>{{comment.created_at}}</span>
+                        <span>{{comment.content}}</span><br>
+                        <span class="post_d-day" style="font-size: 10px;">{{comment.created_at|timesince}}
+                          전</span>
                         {% if user == comment.author or user == post.post.author %}
-                          <a href="{% url 'comment_delete' comment.id%}">삭제</a>
+                          <a href="{% url 'comment_delete' comment.id%}" class="post_comment_input_btn" style="opacity: 0.5;">삭제</a>
                         {% endif %}
                         {% for recomment in recomments %}
                           {% if comment.id == recomment.comment.id %}
@@ -145,8 +146,8 @@
                                 <b>{{recomment.author}}</b>
                               </span>
                               <span>{{ recomment.content }}</span>
-                              {% if user == recomment.author or user == comment.author %}
-                                <a href="{% url 'replycomment_delete' post_id=recomment.id comment_id=recomment.id %}">삭제</a>
+                              {% if user == recomment.author or user == comment.author or user == post.post.author %}
+                                <a href="{% url 'replycomment_delete' post_id=recomment.id comment_id=recomment.id %}" class="post_comment_input_btn" style="opacity: 0.5;">삭제</a>
                               {% endif %}
                             </div>
                           {% endif %}
