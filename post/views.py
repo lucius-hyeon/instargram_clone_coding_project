@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel
+from post.models import ImageModel, PostModel, LikeModel, CommentModel, BookMarkModel, ReplyCommentModel
 from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
@@ -82,12 +82,15 @@ def index(request):
         post_list = make_post(user, post_list)
         user_story = Story.objects.filter(author=user, is_end=False)
 
+        reply_comment = ReplyCommentModel.objects.all()
+
         context = {
             'followers': followers,
             'post_list': post_list,
             'authors': all_story_author[0],
             'viewed_authors': all_story_author[1],
             'user_story': user_story,
+            'recomments': reply_comment
         }
     return render(request, 'index.html', context)
 
@@ -260,4 +263,34 @@ def comment_delete(request, comment_id):
 
     if user == comment.author or user == comment.post.author:
         comment.delete()
+    return redirect('/')
+
+
+# 대댓글 삭제
+@login_required
+def replycomment_delete(request, post_id, comment_id):
+    user = request.user
+    reply_comment = ReplyCommentModel.objects.get(id=comment_id)
+
+    # 게시글 작성자, 게시글의 댓글 작성자 , 댓글의 댓글 작성자가 맞다면 삭제할 수 있다
+    if user == reply_comment.author or user == reply_comment.post.author or user == reply_comment.comment.author:
+        reply_comment.delete()
+    return redirect('/')
+
+
+# 대댓글 생성
+@ login_required
+def replycomment(request, post_id, comment_id):
+    if request.method == "POST":
+        user = request.user
+        post = PostModel.objects.get(id=post_id)
+        comment = CommentModel.objects.get(id=comment_id)
+        content = request.POST.get('relpy')
+
+        ReplyCommentModel.objects.create(
+            content=content,
+            author=user,
+            comment=comment,
+            post=post
+        )
     return redirect('/')
