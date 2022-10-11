@@ -107,7 +107,7 @@ def login(request):
         elif password == '':
             return render(request, 'user/login.html', {'error': '패스워드를 입력해주세요.'})
 
-        # 이미 존재하는 이메일이 있을때
+        # 존재하지 않는 이메일로 로그인 할 경우 에러가 발생하는걸 막기위한 코드
         exist_email = get_user_model().objects.filter(email=email)
         if exist_email:
             pass
@@ -228,6 +228,7 @@ def kakao_social_login_callback(request):
 
 ###user_update##
 
+
 @login_required
 def update(request):
     # get 요청시 페이지를 보여준다.
@@ -246,15 +247,8 @@ def update(request):
         # 닉네임은 중복이 불가한 컬럼이다. 회원정보 수정시 원래 닉네임과 같으면 변경이 안되는 걸 막기위한 코드다.
 
         # TODO
-        if (exist_nickname and user.nickname == nickname) and (exist_username and user.username == username):
-            user.nickname = nickname
-            user.bio = bio
-            user.email = email
-            user.username = username
-            user.save()
-            return redirect('/', user.username)
         # 입력한 닉네임과 db에 저장되어있는 닉네임이 중복되고 내 닉네임과 다르다면 에러창을 띄운다.
-        elif exist_nickname and user.nickname != nickname:
+        if exist_nickname and user.nickname != nickname:
             return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
         elif exist_username and user.username != username:
             return render(request, 'user/update.html', {'error': '이미 사용중인 username 입니다.'})
@@ -276,11 +270,14 @@ def change_password(request):
         # 요청유저 인식
         user = request.user
         origin_password = request.POST["origin_password"]
+        #장고가 제공한 기능을 통해서 현재 비밀번호와 신규 비밀번호를 비교한다.
         if check_password(origin_password, user.password):
             new_password = request.POST["new_password"]
             confirm_password = request.POST["confirm_password"]
+            #현재 비밀번호와 신규 비밀번호를 비교하고 현재 비밀번호와 신규 비밀번호 확인을 비교하여 오류를 띄워준다.
             if origin_password == confirm_password or new_password == origin_password:
                 return render(request, 'user/change_password.html', {'error': '사용하고 있는 비밀번호를 입력하셨습니다.'})
+            #새 비밀번호와 새 비밀번호 확인이 같아야 비밀번호를 저장한다.
             elif new_password == confirm_password:
                 user.set_password(new_password)
                 user.save()
