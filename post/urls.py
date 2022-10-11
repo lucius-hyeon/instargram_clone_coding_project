@@ -22,5 +22,4 @@ urlpatterns = [
     path('replycomment/delete/<int:post_id>/<int:comment_id>/',
          views.replycomment_delete, name="replycomment_delete"),
 
-
 ]
