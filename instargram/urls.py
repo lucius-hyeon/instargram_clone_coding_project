@@ -23,6 +23,7 @@ from . import views
 # from django.conf import settings
 # from django.conf.urls.static import static
 
+#이메일 인증 오류방지
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,6 +39,11 @@ urlpatterns = [
          kakao_social_login_callback, name='kakao_login_callback'),
 
     path('', include('post.urls')),
+
+    #이메일 인증
+    # path('accounts/', include('django.contrib.auth.urls')),
+    # path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
