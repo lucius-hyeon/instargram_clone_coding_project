@@ -124,10 +124,8 @@ def login(request):
         if user is not None:
             auth.login(request, user)  # 로그인 처리
             user = request.user
-            print(user.nickname, user, user.username)
             return redirect("/")
         else:
-            print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
 
 
@@ -304,3 +302,24 @@ def change_password(request):
     else:
         return render(request, 'user/change_password.html')
 
+#회원탈퇴
+
+
+
+def delete(request):
+    if request.method == "POST":
+        user=request.user
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+        #장고기능으로 입력비밀번호와 현재비밀번호를 확인
+        
+        if check_password(password, user.password):
+            email==user.email
+            print(email)
+            user.delete()
+            return redirect('/user/join/')
+        elif email!=user.email or password!=user.password:
+            return render(request, 'user/delete.html', {'error': '비밀번호와 이메일을 다시 확인하세요.'})
+
+    else:
+        return render(request, 'user/delete.html')

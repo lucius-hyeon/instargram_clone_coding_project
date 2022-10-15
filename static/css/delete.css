@@ -1,0 +1,9 @@
+.page .container form button {
+    width: inherit;
+    margin-bottom: 5px;
+    padding: 7px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #0095f6;
+    color: #ffffff;
+  }
