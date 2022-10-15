@@ -262,7 +262,6 @@ def update(request):
             return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
         elif exist_username and user.username != username:
             return render(request, 'user/update.html', {'error': '이미 사용중인 username 입니다.'})
-        # 이게 있어야 하는지 의문이다.
         else:
             user.nickname = nickname
             user.bio = bio
@@ -311,11 +310,10 @@ def delete(request):
         user=request.user
         email=request.POST.get('email')
         password=request.POST.get('password')
+
         #장고기능으로 입력비밀번호와 현재비밀번호를 확인
-        
         if check_password(password, user.password):
             email==user.email
-            print(email)
             user.delete()
             return redirect('/user/join/')
         elif email!=user.email or password!=user.password:
