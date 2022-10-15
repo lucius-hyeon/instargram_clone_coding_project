@@ -1,7 +1,5 @@
 from django.urls import path
 from . import views
-#이메일 인증
-
 
 urlpatterns = [
     path('join/', views.join, name='join'),

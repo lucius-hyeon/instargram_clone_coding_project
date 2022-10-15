@@ -3,15 +3,16 @@ from .models import UserModel, FollowModel
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-
 import re
 import requests
 import random
 import string
 
+# 회원탈퇴
+
 # 비밀번호 변경
 from django.contrib.auth.hashers import check_password
-from django.contrib import messages, auth
+from django.contrib import auth
 
 
 @login_required(login_url='login')
@@ -239,6 +240,7 @@ def kakao_social_login_callback(request):
 ###user_update##
 
 
+
 @login_required
 def update(request):
     # get 요청시 페이지를 보여준다.
@@ -274,6 +276,7 @@ def update(request):
 ###비밀번호 변경###
 
 
+
 @login_required
 def change_password(request):
     if request.method == "POST":
@@ -300,3 +303,4 @@ def change_password(request):
             return render(request, 'user/change_password.html', {'error': '현재 비밀번호가 틀렸습니다.'})
     else:
         return render(request, 'user/change_password.html')
+
