@@ -44,7 +44,7 @@
           </div>
           <div class="container">
               {% block content %}
-              <form method="POST" action="{% url 'delete' %}">
+              <form method="POST" action="{% url 'user:delete' %}">
                   {% csrf_token %}
                   이메일 : <input name="eamil" type="email">        
                   현재 비밀번호 : <input name="password" type="password">
