@@ -129,13 +129,6 @@ def login(request):
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
 
 
-### 로그아웃 ###
-@login_required
-def logout(request):
-    auth.logout(request)
-    return redirect('login')
-
-
 
 def get_random_nickname():
     """
@@ -321,3 +314,9 @@ def delete(request):
 
     else:
         return render(request, 'user/delete.html')
+
+### 로그아웃 ###
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('/user/login/')

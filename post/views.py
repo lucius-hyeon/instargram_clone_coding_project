@@ -5,6 +5,8 @@ from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 
+# def index(request):
+#     return render(request, 'user/login.html')
 
 @login_required(login_url='login')
 def post_add(request):

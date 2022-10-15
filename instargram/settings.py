@@ -182,3 +182,6 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'splendent77@gmail.com'
 EMAIL_HOST_PASSWORD = 'vgtrzudyzufmacwq'
 EMAIL_USE_TLS = True
+
+#로그아웃 시 이동할 페이지
+LOGOUT_REDIRECT_URL = '/user/login'

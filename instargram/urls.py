@@ -18,7 +18,7 @@ from django.urls import path, include
 from user.views import switch_follow, kakao_social_login, kakao_social_login_callback
 from django.conf import settings
 from django.conf.urls.static import static
-
+from . import views
 
 # from django.conf import settings
 # from django.conf.urls.static import static
