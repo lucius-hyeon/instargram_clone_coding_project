@@ -177,8 +177,11 @@ SITE_ID = 1
 # # 사이트와 관련한 자동응답을 받을 이메일 주소
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.googlemail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'splendent77@gmail.com'
 EMAIL_HOST_PASSWORD = 'vgtrzudyzufmacwq'
 EMAIL_USE_TLS = True
+
+#로그아웃 시 이동할 페이지
+LOGOUT_REDIRECT_URL = '/user/login'

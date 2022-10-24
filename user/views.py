@@ -3,15 +3,16 @@ from .models import UserModel, FollowModel
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
-
 import re
 import requests
 import random
 import string
 
+# 회원탈퇴
+
 # 비밀번호 변경
 from django.contrib.auth.hashers import check_password
-from django.contrib import messages, auth
+from django.contrib import auth
 
 
 @login_required(login_url='login')
@@ -123,18 +124,9 @@ def login(request):
         if user is not None:
             auth.login(request, user)  # 로그인 처리
             user = request.user
-            print(user.nickname, user, user.username)
             return redirect("/")
         else:
-            print('로그인 실패')
             return render(request, 'user/login.html', {'error': '유저 정보를 찾을 수 없습니다.'})
-
-
-### 로그아웃 ###
-@login_required
-def logout(request):
-    auth.logout(request)
-    return redirect('login')
 
 
 
@@ -239,6 +231,7 @@ def kakao_social_login_callback(request):
 ###user_update##
 
 
+
 @login_required
 def update(request):
     # get 요청시 페이지를 보여준다.
@@ -262,7 +255,6 @@ def update(request):
             return render(request, 'user/update.html', {'error': '이미 사용중인 nickname 입니다.'})
         elif exist_username and user.username != username:
             return render(request, 'user/update.html', {'error': '이미 사용중인 username 입니다.'})
-        # 이게 있어야 하는지 의문이다.
         else:
             user.nickname = nickname
             user.bio = bio
@@ -272,6 +264,7 @@ def update(request):
             return redirect('/', user.username)
 
 ###비밀번호 변경###
+
 
 
 @login_required
@@ -300,3 +293,61 @@ def change_password(request):
             return render(request, 'user/change_password.html', {'error': '현재 비밀번호가 틀렸습니다.'})
     else:
         return render(request, 'user/change_password.html')
+
+#회원탈퇴
+
+
+
+def delete(request):
+    if request.method == "POST":
+        user=request.user
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+
+        #장고기능으로 입력비밀번호와 현재비밀번호를 확인
+        if check_password(password, user.password):
+            email==user.email
+            user.delete()
+            return redirect('/user/join/')
+        elif email!=user.email or password!=user.password:
+            return render(request, 'user/delete.html', {'error': '비밀번호와 이메일을 다시 확인하세요.'})
+
+    else:
+        return render(request, 'user/delete.html')
+
+### 로그아웃 ###
+@login_required
+def logout(request):
+    auth.logout(request)
+    return redirect('/user/login/')
+
+
+###이메일 인증
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+from user.forms import PasswordResetForm
+
+
+class PasswordResetView(auth_views.PasswordResetView):
+    """
+    비밀번호 초기화 - 사용자ID, email 입력
+    """
+    template_name = 'user/password_reset.html'
+    # success_url = reverse_lazy('password_reset_done')
+    form_class = PasswordResetForm
+    # email_template_name = 'common/password_reset_email.html'
+
+
+class PasswordResetDoneView(auth_views.PasswordResetDoneView):
+    """
+    비밀번호 초기화 - 메일 전송 완료
+    """
+    template_name = 'user/password_reset_done.html'
+
+
+class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    """
+    비밀번호 초기화 - 새로운 비밀번호 입력
+    """
+    template_name = 'user/password_reset_confirm.html'
+    success_url = reverse_lazy('login')

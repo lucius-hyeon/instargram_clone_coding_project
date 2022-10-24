@@ -5,6 +5,10 @@ from story.models import Story
 from user.models import FollowModel, UserModel
 from story.views import get_storys_author
 
+# def index(request):
+#     if request.method=='GET':
+#         return render(request, 'user/login.html')
+    
 
 @login_required(login_url='login')
 def post_add(request):
@@ -21,7 +25,7 @@ def post_add(request):
 
         return render(request, 'index.html')
 
-
+#login이라는 이름의 url로 이동시켜준다
 @login_required(login_url='login')
 def post_update(request, post_id):
     if request.method == 'POST':
@@ -37,7 +41,7 @@ def post_update(request, post_id):
 
         return render(request, 'index.html')
 
-
+#힌트일 뿐 post_list: list 없어도 된다 : list
 def make_post(user, post_list: list):
     """
     Return post_list with detail informations
